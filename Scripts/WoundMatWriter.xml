@@ -1,0 +1,6 @@
+<Button     id="auto_injury"  position="218 18 -60"   scale="0.2 0.2 0.2"                     width="270" height="210" color="#00000000" textColor="#FFFFFF" fontSize="180"
+  onClick="toggleCheckBox" text="✘" value="true" />
+<InputField id="hp"           position="-158 170 -60" scale="0.2 0.2 0.2" rotation="0 0 180"  width="880" height="400" color="#80808000" textColor="#FFFFFF" fontSize="250" characterValidation="Decimal" textAlignment="MiddleCenter"
+  onEndEdit="ChangeOptionValue"/>
+<Button                       position="-175 740 -60"                     rotation="0 0 180"  width="960" height="70"  color="#FCEB03FF" textColor="#000000" fontSize="50"  fontStyle="BoldAndItalic"
+  onClick="KTUI_ResetScripts"> Fix Display Issues </Button>
