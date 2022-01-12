@@ -1,5 +1,5 @@
-face_up_settings = { name = "Token_faceup", url = "https://example.com/Token_faceup.png", removable = true, stackable = false }
-face_down_settings = { name = "Token_faceup", url = "https://example.com/Token_faceup.png", removable = true, stackable = false }
+face_up_settings = { name = "Token_faceup", url = "https://example.com/Token_faceup.png", removable = true, stackable = false, secret = false }
+face_down_settings = { name = "Token_faceup", url = "https://example.com/Token_faceup.png", removable = true, stackable = false, secret = false }
 is_face_up = true
 face_coordinate = "x" -- Change this to either x, y or z accordingly to the model flip axis
 face_up_limit = 180 -- Change this to modify the rotational value of the above selected coordinate after which the token will be considered facing down
