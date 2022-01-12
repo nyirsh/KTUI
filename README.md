@@ -78,4 +78,4 @@ Please do not use, under any circumstances, the following names/descriptions for
 ## Credits
 * [MoonkeyMod](https://steamcommunity.com/id/moonkey2010) for creating the [KT Map Base Table](https://steamcommunity.com/sharedfiles/filedetails/?id=2574389665)
 * [Focks](https://steamcommunity.com/id/zeuglinredux) for creating [KT Command Node](https://steamcommunity.com/sharedfiles/filedetails/?id=2614731381&searchtext=Command+node)
-* [???](???) for making the graphics
+* Rebelson666 for making the graphics
