@@ -34,7 +34,7 @@ Description: Minus_1_blue
 
 `removable`: if set to `false`, after being attached to the miniature it can't be removed by any means (useful for permanent equipments)
 
-`stackable`: if set to `true`, the miniature will count ow many tokens of the same kind have been applied to it
+`stackable`: if set to `true`, the miniature will count how many tokens of the same kind have been applied to it
 
 `secret`: if set to `true` makes the token only visible to the miniature's owner, after being applied to it, until it is clicked on. Useful for secret roles specific tokens (ie. Interloper). It will also override `removable` and `stackable` to `false`.
 
@@ -51,7 +51,7 @@ Please refrain from creating tokens this way if you're not familiar on how to im
 
 `removable`: if set to `false`, after being attached to the miniature it can't be removed by any means (useful for permanent equipments)
 
-`stackable`: if set to `true`, the miniature will count ow many tokens of the same kind have been applied to it
+`stackable`: if set to `true`, the miniature will count how many tokens of the same kind have been applied to it
 
 `secret`: if set to `true` makes the token only visible to the miniature's owner, after being applied to it, until it is clicked on. Useful for secret roles specific tokens (ie. Interloper). It will also override `removable` and `stackable` to `false`.
 * If the token is not recognizing the right face completely (so it's not like face up and face down are mixed up), try to re-import your model from scratch and change the value of `face_coordinate` to a different one before experimenting with `face_up_limit` too
