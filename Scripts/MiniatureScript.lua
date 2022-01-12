@@ -544,7 +544,7 @@ function onCollisionEnter(a)
     a.collision_object.destruct()
     -- If the token is new to the miniature, it adds it to the list of tokens
     if state.attachments[newState] == nil then
-      state.attachments[newState] = { name = newState, url = imageUrl, removable = true, stackable = stackable, secret = false, active = true, stack = 0 }
+      state.attachments[newState] = { name = newState, url = imageUrl, removable = true, stackable = stackable, secret = false, active = true, stack = 1 }
       saveState()
       createUI()
     else
