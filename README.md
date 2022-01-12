@@ -5,7 +5,7 @@ Kill Team UI - A tool to improve Kill Team's TTS games QoL
 * [One-sided tokens](#one-sided-tokens)
 * [One-sided advanced tokens](#one-sided-advanced-tokens)
 * [Two-sided tokens](#two-sided-tokens)
-* [Bundle tokens](#bundle-tokens)
+* [Bundling tokens together](#bundling-tokens-together)
 * [Reserved names](#reserved-names)
 
 ## One-sided tokens
@@ -45,6 +45,9 @@ Please refrain from creating tokens this way if you're not familiar on how to im
 `stackable`: if set to `true`, the miniature will count ow many tokens of the same kind have been applied to it
 `secret`: if set to `true` makes the token only visible to the miniature's owner, after being applied to it, until it is clicked on. Useful for secret roles specific tokens (ie. Interloper)
 * If the token is not recognizing the right face completely (so it's not like face up and face down are mixed up), try to re-import your model from scratch and change the value of `face_coordinate` to a different one before experimenting with `face_up_limit` too
+
+## Bundling tokens together
+If you wish it is also possible to bundle all the tokens up into a single state-driven token. To do so, make sure that all the tokens you're about to bundle up together have the proper tags / scripts / descriptions before merging them all together in the same state
 
 ## Reserved names
 Please do not use, under any circumstances, the following names/descriptions for your tokens:
