@@ -1,14 +1,11 @@
-token_name = "Conceal"
-face_up_modifier = "_ready"
-face_down_modifier = "_activated"
-face_up_limit = 180
-face_coordinate = "x"
+face_up_settings = { name = "Token_faceup", url = "https://example.com/Token_faceup.png", removable = true, stackable = false }
+face_down_settings = { name = "Token_faceup", url = "https://example.com/Token_faceup.png", removable = true, stackable = false }
+is_face_up = true
+face_coordinate = "x" -- Change this to either x, y or z accordingly to the model flip axis
+face_up_limit = 180 -- Change this to modify the rotational value of the above selected coordinate after which the token will be considered facing down
 
-face_current_state = token_name..face_up_modifier
-debug = true
 
 function onLoad()
-  debug = false -- Change it to false before publishing
   KTUI_CalculateTokenFace(false)
 end
 
@@ -53,18 +50,18 @@ function KTUI_CalculateTokenFace(flipped)
   if (rotC >= face_up_limit and not flipped)
     or (rotC <= face_up_limit and flipped)
   then
-    face_current_state = token_name..face_up_modifier
+    is_face_up = true
 
   else
-    face_current_state = token_name..face_down_modifier
-  end
-
-  if debug then
-    print(KTUI_GetTokenFace())
+    is_face_up = false
   end
 end
 
 
 function KTUI_GetTokenFace()
-  return face_current_state
+  if is_face_up then
+    return face_up_settings
+  else
+    return face_down_settings
+  end
 end
