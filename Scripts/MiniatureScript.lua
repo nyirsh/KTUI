@@ -392,10 +392,8 @@ function getOwningPlayer()
 end
 
 function setOwningPlayer(newOwner)
-	print("entra")
 	state.owner = newOwner
 end
-
 
 function onPlayerChangeColor(color)
   if color ~= "Grey" then
@@ -609,7 +607,7 @@ function onCollisionEnter(a)
 end
 
 
-function KTUI_ReadyOperative() -- For possible integrations with any other UI
+function KTUI_ReadyOperative()
   state.ready = true
   refreshUI()
 end
