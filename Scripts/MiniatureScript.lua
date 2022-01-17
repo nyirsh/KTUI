@@ -612,6 +612,11 @@ function KTUI_ReadyOperative()
   refreshUI()
 end
 
+function KTUI_CleanOperative()
+  state.attachments = {}
+  refreshUI()
+end
+
 
 function comCheckOwner(t)
   return t[1] == state.owner
