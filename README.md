@@ -4,7 +4,7 @@ Kill Team UI - A tool to improve Kill Team's TTS games QoL
 ## Credits
 * [MoonkeyMod](https://steamcommunity.com/id/moonkey2010) for creating the [KT Map Base Table](https://steamcommunity.com/sharedfiles/filedetails/?id=2574389665)
 * [Focks](https://steamcommunity.com/id/zeuglinredux) for creating [KT Command Node](https://steamcommunity.com/sharedfiles/filedetails/?id=2614731381&searchtext=Command+node)
-* Rebelson666 for making the graphics
+* [Rebelson666](https://discordapp.com/users/330047329988116480) for making the graphics
 
 ## How to create
 * [One-sided tokens](#one-sided-tokens)
