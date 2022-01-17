@@ -392,6 +392,7 @@ function getOwningPlayer()
 end
 
 function setOwningPlayer(newOwner)
+	print("entra")
 	state.owner = newOwner
 end
 
