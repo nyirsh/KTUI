@@ -57,6 +57,18 @@ function SaveAllPositions(player)
   player.broadcast("All positions saved")
 end
 
+function LoadAllPositions(player)
+  for _, obj in ipairs(getAllObjects()) do
+    if obj.hasTag('KTUIMini') then
+      local op = obj.call("getOwningPlayer")
+      if op ~= nil then
+        obj.call("loadPosition")
+      end
+    end
+  end
+  player.broadcast("All positions saved")
+end
+
 function ReadyAllOperatives(player)
   for _, obj in ipairs(getAllObjects()) do
     if obj.hasTag('KTUIMini') then
@@ -78,5 +90,5 @@ function CleanAllOperatives(player)
       end
     end
   end
-  player.broadcast("All operatives have cleaned of their equipments")
+  player.broadcast("All operatives have cleaned of their tokens")
 end

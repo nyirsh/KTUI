@@ -3,4 +3,4 @@
 <Button position="-780 350 -60"  rotation="0 0 -90"  width="300" height="50" fontSize="30" fontStyle="Bold" onClick="SaveAllPositions"> Save Positions </Button>
 <Button position="-720 350 -60"  rotation="0 0 -90"  width="300" height="50" fontSize="30" fontStyle="BoldAndItalic" onClick="LoadAllPositions"> Load Positions </Button>
 <Button position="-780 670 -60"  rotation="0 0 -90"  width="300" height="50" fontSize="30" fontStyle="Bold" onClick="ReadyAllOperatives"> Ready Operatives </Button>
-<Button position="-780 -670 -60" rotation="0 0 -90"  width="300" height="50" color="#e98c4c" fontSize="30" fontStyle="Bold" onClick="CleanAllOperatives"> Clean Operatives </Button>
+<Button position="-780 -670 -60" rotation="0 0 -90"  width="300" height="50" color="#e98c4c" fontSize="30" fontStyle="Bold" onClick="CleanAllOperatives"> Remove All Tokens </Button>
