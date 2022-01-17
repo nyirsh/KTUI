@@ -149,16 +149,19 @@ function callback_attachment(player, value, id)
   local mustRefresh = false
   if state.attachments[attachment].active == false or state.attachments[attachment].removable == false then return end
   if state.attachments[attachment].stackable then
-    state.attachments[attachment].stack = state.attachments[attachment].stack - 1
+    local stackModifier = -1
+    if value == "-1" then stackModifier = 1 end
+    state.attachments[attachment].stack = state.attachments[attachment].stack + stackModifier
     if state.attachments[attachment].stack <= 0 then
       state.attachments[attachment].stack = 0
       state.attachments[attachment].active = false
     end
     mustRefresh = true
   else
-    state.attachments[attachment].active = false
-    mustRefresh = true
-
+    if value == "-2" then
+      state.attachments[attachment].active = false
+      mustRefresh = true
+    end
   end
 
   if mustRefresh then
@@ -169,16 +172,26 @@ end
 
 function callback_secret(player, value, id)
   local attachment = id:gsub("ktcnid[-]status[-]", "")
-  state.attachments[attachment].active = not state.attachments[attachment].active
+  if value == "-1" then
+    state.attachments[attachment].active = not state.attachments[attachment].active
+  end
   saveState()
   refreshUI()
 end
 
 function callback_orders(player, value, id)
-  if state.ready == nil or state.ready then
-    state.ready = false
+  if value == '-1' then
+    if state.ready == nil or state.ready then
+      state.ready = false
+    else
+      state.ready = true
+    end
   else
-    state.ready = true
+    if state.order == "Engage" then
+      state.order = "Conceal"
+    else
+      state.order = "Engage"
+    end
   end
   refreshUI()
 end
