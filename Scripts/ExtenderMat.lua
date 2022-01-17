@@ -82,7 +82,9 @@ function ReadyAllOperatives(player)
 end
 
 function CleanAllOperatives(player)
-  for _, obj in ipairs(getAllObjects()) do
+  local allTops = detectItemOnTop()
+  for _,hitlist in ipairs(allTops) do
+    local obj = hitlist["hit_object"]
     if obj.hasTag('KTUIMini') then
       local op = obj.call("getOwningPlayer")
       if op ~= nil then
