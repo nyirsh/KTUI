@@ -280,11 +280,11 @@ end
 
 function createUI()
   local baseBundle = {
-    {name="Engage_ready", url=[=[https://raw.githubusercontent.com/nyirsh/KTUI/main/Resources/Engage_ready.png]=]},
-    {name="Engage_activated", url=[=[https://raw.githubusercontent.com/nyirsh/KTUI/main/Resources/Engage_activated.png]=]},
-    {name="Conceal_ready", url=[=[https://raw.githubusercontent.com/nyirsh/KTUI/main/Resources/Conceal_ready.png]=]},
-    {name="Conceal_activated", url=[=[https://raw.githubusercontent.com/nyirsh/KTUI/main/Resources/Conceal_activated.png]=]},
-    {name="wound",   url=[=[https://raw.githubusercontent.com/nyirsh/KTUI/main/Resources/wound.png]=]},
+    {name="Engage_ready", url=[=[http://cloud-3.steamusercontent.com/ugc/1857172427760474363/695DDBC1E5EBD24801831E34F2C640B0B0DACF20/]=]},
+    {name="Engage_activated", url=[=[http://cloud-3.steamusercontent.com/ugc/1857172427760474790/63E7C5132CFE12964FFAA74EE03535EA6FEE2637/]=]},
+    {name="Conceal_ready", url=[=[http://cloud-3.steamusercontent.com/ugc/1857172427760474921/2051CBD8272374F262C88AC0DABF50BEAAB2C3BA/]=]},
+    {name="Conceal_activated", url=[=[http://cloud-3.steamusercontent.com/ugc/1857172427760474857/9CE3B9494B93973E94B71E062558E88D83BEC6BC/]=]},
+    {name="wound",   url=[=[http://cloud-3.steamusercontent.com/ugc/1857171826950614938/C515FF37C3D1D269533C1B5FDA675895F792BC15/]=]},
   }
 
   for _,i in pairs(state.attachments) do
