@@ -391,6 +391,12 @@ function getOwningPlayer()
   return nil
 end
 
+function setOwningPlayer(newOwner)
+print (newOwner)
+	state.owner = newOwner
+end
+
+
 function onPlayerChangeColor(color)
   if color ~= "Grey" then
     local p = Player[color]
