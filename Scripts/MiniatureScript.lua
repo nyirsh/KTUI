@@ -280,11 +280,11 @@ end
 
 function createUI()
   local baseBundle = {
-    {name="Engage_ready", url=[=[http://cloud-3.steamusercontent.com/ugc/1857171492582455191/E8DBB48F334D7D7C12849DBB70EA45C488693916/]=]},
-    {name="Engage_activated", url=[=[http://cloud-3.steamusercontent.com/ugc/1857171492582455274/A6A8C7DC303776C8AA8BD08B210E48A61A703EC2/]=]},
-    {name="Conceal_ready", url=[=[http://cloud-3.steamusercontent.com/ugc/1857171492582455444/B011F9E34A1AED8C44731C11DA4C3F794124E0C3/]=]},
-    {name="Conceal_activated", url=[=[http://cloud-3.steamusercontent.com/ugc/1857171492582455368/B47A139555B45E42588B19225F86F2B9461D50A0/]=]},
-    {name="wound",   url=[=[http://cloud-3.steamusercontent.com/ugc/1857171826950614938/C515FF37C3D1D269533C1B5FDA675895F792BC15/]=]},
+    {name="Engage_ready", url=[=[https://raw.githubusercontent.com/nyirsh/KTUI/main/Resources/Engage_ready.png]=]},
+    {name="Engage_activated", url=[=[https://raw.githubusercontent.com/nyirsh/KTUI/main/Resources/Engage_activated.png]=]},
+    {name="Conceal_ready", url=[=[https://raw.githubusercontent.com/nyirsh/KTUI/main/Resources/Conceal_ready.png]=]},
+    {name="Conceal_activated", url=[=[https://raw.githubusercontent.com/nyirsh/KTUI/main/Resources/Conceal_activated.png]=]},
+    {name="wound",   url=[=[https://raw.githubusercontent.com/nyirsh/KTUI/main/Resources/wound.png]=]},
   }
 
   for _,i in pairs(state.attachments) do
