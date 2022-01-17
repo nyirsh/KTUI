@@ -10,7 +10,7 @@ function KTUI_ResetScripts()
   broadcastToAll("Reloaded "..r.." items")
 end
 
-function detectItemOnTop()  --casts a ball that detects all the items on top
+function detectItemOnTop()
     local start = {self.getPosition()[1],self.getPosition()[2]+3.1,self.getPosition()[3]}
     local hitList = Physics.cast({
         origin       = start,
@@ -23,13 +23,12 @@ function detectItemOnTop()  --casts a ball that detects all the items on top
     return hitList
 end
 
-function ExtendUI()
+function ExtendUI(player)
   WebRequest.get("https://raw.githubusercontent.com/nyirsh/KTUI/main/Scripts/MiniatureScript.lua", function(req)
     if req.is_error then
       log(req.error)
     else
       local allTops = detectItemOnTop()
-      local somethingExtended = false
       local script = req.text
 
       for _,hitlist in ipairs(allTops) do
@@ -38,11 +37,9 @@ function ExtendUI()
           somethingExtended = true
           object.setLuaScript(script)
           object.addTag("KTUIMini")
+          object.reload()
+          object.call("setOwningPlayer", player.steam_id)
         end
-      end
-
-      if somethingExtended then
-        KTUI_ResetScripts()
       end
     end
   end)

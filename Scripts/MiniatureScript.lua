@@ -392,7 +392,6 @@ function getOwningPlayer()
 end
 
 function setOwningPlayer(newOwner)
-print (newOwner)
 	state.owner = newOwner
 end
 
