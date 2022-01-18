@@ -696,12 +696,9 @@ function onCollisionEnter(a)
   if mustRefresh then
     saveState()
     refreshUI()
-    self.reload()
+    Wait.frames(function() isColliding = false self.reload() end, 30)
   end
-  Wait.frames(function()
-    isColliding = false
-    self.reload()
-  end, 30)
+  Wait.frames(function() isColliding = false end, 40)
 end
 
 
