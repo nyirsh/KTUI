@@ -1,4 +1,4 @@
-# KTUI
+# KT Command Node UI Extender
 Kill Team UI - A tool to improve Kill Team's TTS games QoL
 
 ## Credits
