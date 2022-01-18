@@ -97,7 +97,8 @@ Please do not use, under any circumstances, the following names/descriptions for
 * Engage_activated
 * Conceal_ready
 * Conceal_activated
-* wound
+* Wound_blue
+* Wound_red
 * Minus_1_blue
 * Minus_1_red
 * Plus_1_blue
