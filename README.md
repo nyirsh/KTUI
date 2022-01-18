@@ -1,20 +1,19 @@
-# KT Command Node UI Extender
+# <img src="https://raw.githubusercontent.com/nyirsh/KTUI/main/Resources/Thumb.png" width="50px" height="50px"> KT Command Node UI Extender
 Kill Team Command Node UI Extender - A tool to improve KT Command Node UI experience
 
-## Credits
-* [MoonkeyMod](https://steamcommunity.com/id/moonkey2010) for creating the [KT Map Base Table](https://steamcommunity.com/sharedfiles/filedetails/?id=2574389665)
-* [Focks](https://steamcommunity.com/id/zeuglinredux) for creating [KT Command Node](https://steamcommunity.com/sharedfiles/filedetails/?id=2614731381&searchtext=Command+node)
-* [Rebelson666](https://discordapp.com/users/330047329988116480) for making the graphics
+## Contents
+How to use the mod:
 
-## How to create
+How to create tokens:
 * [One-sided tokens](#one-sided-tokens)
 * [One-sided advanced tokens](#one-sided-advanced-tokens)
 * [Simple equipment tokens](#simple-equipment-tokens)
 * [Two-sided tokens](#two-sided-tokens)
 * [Bundling tokens together](#bundling-tokens-together)
-* [Reserved names](#reserved-names)
 
-The following are instructions for mod makers, please simply ignore these instructions:
+Other stuff:
+* [Credits](#credits)
+* [Reserved names](#reserved-names)
 * [Order tokens](#order-tokens)
 
 ## One-sided tokens
@@ -85,6 +84,13 @@ Please refrain from creating tokens this way if you're not familiar on how to im
 ## Bundling tokens together
 If you wish it is also possible to bundle all the tokens up into a single state-driven token. To do so, make sure that all the tokens you're about to bundle up together have the proper tags / scripts / descriptions before merging them all together in the same state
 
+--------------------------------------
+
+## Credits
+* [MoonkeyMod](https://steamcommunity.com/id/moonkey2010) for creating the [KT Map Base Table](https://steamcommunity.com/sharedfiles/filedetails/?id=2574389665)
+* [Focks](https://steamcommunity.com/id/zeuglinredux) for creating [KT Command Node](https://steamcommunity.com/sharedfiles/filedetails/?id=2614731381&searchtext=Command+node)
+* [Rebelson666](https://discordapp.com/users/330047329988116480) for making the graphics
+
 ## Reserved names
 Please do not use, under any circumstances, the following names/descriptions for your tokens:
 * Engage_ready
@@ -100,8 +106,6 @@ Please do not use, under any circumstances, the following names/descriptions for
 * Exclamation_red
 * Crosshair_blue
 * Crosshair_red
-
---------------------------------------
 
 ## Order tokens
 * Spawn a non-stackable `Token` item (`Objects > Components > Custom > Token`)
