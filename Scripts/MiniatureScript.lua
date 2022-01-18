@@ -264,7 +264,7 @@ function refreshUI()
   for _,i in pairs(state.attachments) do
     if i.equipment == true and i.active == true then
       totalSecrets = totalSecrets + 1
-      local xmlAttachmentFormatted = [[<Image id="ktcnid-status-]]..i.name..[[" image="]]..i.name..[[" width="20" height="20" preserveAspect="true"]]
+      local xmlAttachmentFormatted = [[<Image id="ktcnid-status-]]..i.name..[[" image="]]..i.name..[[" width="30" height="30" preserveAspect="true"]]
       xmlAttachmentFormatted = xmlAttachmentFormatted..[[ active="true" onclick="callback_attachment" /> --@EquipmentPlaceholder]]
       xmlTable = xmlTable:gsub("--@EquipmentPlaceholder", xmlAttachmentFormatted)
     elseif i.secret == false then
@@ -281,7 +281,7 @@ function refreshUI()
       end
     else
       totalSecrets = totalSecrets + 1
-      local xmlAttachmentFormatted = [[<Image id="ktcnid-status-]]..i.name..[[" image="]]..i.name..[[" width="20" height="20" preserveAspect="true"]]
+      local xmlAttachmentFormatted = [[<Image id="ktcnid-status-]]..i.name..[[" image="]]..i.name..[[" width="30" height="30" preserveAspect="true"]]
       if i.active then
         xmlAttachmentFormatted = xmlAttachmentFormatted..[[ visibility="]]..tostring(sv)..[[" color="#333333DD" ]]
       end
@@ -297,7 +297,7 @@ function refreshUI()
   --xmlTable = xmlTable:gsub("@items", "true")
 
   xmlTable = xmlTable:gsub("@totalAtt", tostring((totalAtt * 30) + (totalStack * 25)))
-  xmlTable = xmlTable:gsub("@totalSecret", tostring((totalSecrets * 20)))
+  xmlTable = xmlTable:gsub("@totalSecret", tostring((totalSecrets * 30)))
   xmlTable = xmlTable:gsub("--@SecretsPlaceholder", secretxmlAttachmentFormatted)
 
 
