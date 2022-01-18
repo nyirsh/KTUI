@@ -217,6 +217,14 @@ function refreshUI()
     off_order = 80
   end
 
+  local p = getOwningPlayer()
+  local wound_color = "red"
+  if p ~= nil then
+    if p.color ~= "Red" then
+      wound_color = "blue"
+    end
+  end
+
   local xmlTable = [[<Defaults>
   <Image class="statusDisplay" hideAnimation="Shrink" showAnimation="Grow" preserveAspect="true" />
 </Defaults>
@@ -228,7 +236,7 @@ function refreshUI()
   </HorizontalLayout>
 
 	<Panel color="#808080" outline="#FF5500" outlineSize="2 2" width="80" height="25" offsetXY="]]..circOffset(40, 270)..[[">
-    <Image id="ktcnid-status-injured" image="wound" width="30" height="30" rectAlignment="MiddleLeft" offsetXY="]]..off_injured..[[ 0" active="]]..tostring(isInjured())..[[" />
+    <Image id="ktcnid-status-injured" image="Wound_]]..wound_color..[[" width="30" height="30" rectAlignment="MiddleLeft" offsetXY="]]..off_injured..[[ 0" active="]]..tostring(isInjured())..[[" />
 		<Button text="-" width="30" height="30" offsetXY="-65 0" onClick="damage" active="]]..tostring((state.display_arrows or false))..[[" />
 		<Text id="ktcnid-status-wounds" text="]]..string.format("%d/%d", state.wounds, state.stats.W)..[[" resizeTextForBestFit="true" color="#ffffff" onClick="toggleArrows" />
 		<Button text="+" width="30" height="30" offsetXY="65 0" onClick="heal" active="]]..tostring((state.display_arrows or false))..[[" />
@@ -238,6 +246,8 @@ function refreshUI()
     --@AttachmentPlaceholder
   </HorizontalLayout>
 </Panel>]]
+
+
 
   local hasRoles = next(state.roles) ~= nil
   local hiddenRoles = next(state.hiddenRoles) ~= nil
@@ -286,7 +296,7 @@ function refreshUI()
   end
   --xmlTable = xmlTable:gsub("@items", "true")
 
-  xmlTable = xmlTable:gsub("@totalAtt", tostring((totalAtt * 30) + (totalStack * 20)))
+  xmlTable = xmlTable:gsub("@totalAtt", tostring((totalAtt * 30) + (totalStack * 25)))
   xmlTable = xmlTable:gsub("@totalSecret", tostring((totalSecrets * 20)))
   xmlTable = xmlTable:gsub("--@SecretsPlaceholder", secretxmlAttachmentFormatted)
 
@@ -303,7 +313,8 @@ function createUI()
     {name="Engage_activated", url=[=[http://cloud-3.steamusercontent.com/ugc/1857172427760474790/63E7C5132CFE12964FFAA74EE03535EA6FEE2637/]=]},
     {name="Conceal_ready", url=[=[http://cloud-3.steamusercontent.com/ugc/1857172427760474921/2051CBD8272374F262C88AC0DABF50BEAAB2C3BA/]=]},
     {name="Conceal_activated", url=[=[http://cloud-3.steamusercontent.com/ugc/1857172427760474857/9CE3B9494B93973E94B71E062558E88D83BEC6BC/]=]},
-    {name="wound",   url=[=[http://cloud-3.steamusercontent.com/ugc/1857171826950614938/C515FF37C3D1D269533C1B5FDA675895F792BC15/]=]},
+    {name="Wound_blue",   url=[=[http://cloud-3.steamusercontent.com/ugc/1857171492582455772/CFB7B4D001501AC54B4D0CC7FEE35AF679B73D34/]=]},
+	  {name="Wound_red",   url=[=[http://cloud-3.steamusercontent.com/ugc/1857171826950614938/C515FF37C3D1D269533C1B5FDA675895F792BC15/]=]},
   }
 
   for _,i in pairs(state.attachments) do
