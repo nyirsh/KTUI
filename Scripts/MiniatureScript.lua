@@ -213,7 +213,7 @@ function refreshUI()
   local off_injured = -35
   local off_order = 50
   if state.display_arrows then
-    off_injured = -65
+    off_injured = -75
     off_order = 80
   end
 
@@ -222,7 +222,8 @@ function refreshUI()
 </Defaults>
 <Panel position="0 0 -]]..tostring(state.uiHeight*100*scaleFactorZ)..[[" width="100" height="100" rotation="0 0 ]]..(state.uiAngle or 0)..[[" scale="]]..scaleFactorX..[[ ]]..scaleFactorY..[[ ]]..scaleFactorZ..[[">
 
-  <HorizontalLayout spacing="3" width="@totalSecret" height="20" offsetXY="-20 -10">
+  <HorizontalLayout spacing="3" width="@totalSecret" height="20" offsetXY="-30 -10">
+    --@EquipmentPlaceholder
     --@SecretsPlaceholder
   </HorizontalLayout>
 
@@ -251,7 +252,12 @@ function refreshUI()
 
   local secretxmlAttachmentFormatted = "--@SecretsPlaceholder"
   for _,i in pairs(state.attachments) do
-    if i.secret == false then
+    if i.equipment == true and i.active == true then
+      totalSecrets = totalSecrets + 1
+      local xmlAttachmentFormatted = [[<Image id="ktcnid-status-]]..i.name..[[" image="]]..i.name..[[" width="20" height="20" preserveAspect="true"]]
+      xmlAttachmentFormatted = xmlAttachmentFormatted..[[ active="true" onclick="callback_attachment" /> --@EquipmentPlaceholder]]
+      xmlTable = xmlTable:gsub("--@EquipmentPlaceholder", xmlAttachmentFormatted)
+    elseif i.secret == false then
       if i.active then
         totalAtt = totalAtt + 1
         local xmlAttachmentFormatted = [[<Image id="ktcnid-status-]]..i.name..[[" image="]]..i.name..[[" width="30" height="30" preserveAspect="true" ]]
@@ -554,14 +560,20 @@ function onCollisionEnter(a)
     if newState:startswith("Engage") then state.order = "Engage" else state.order = "Conceal" end
     if newState:endswith("ready") then state.ready = true else state.ready = false end
     mustRefresh = true
-  elseif a.collision_object.hasTag("KTUITokenSimple") then
+  elseif a.collision_object.hasTag("KTUITokenSimple") or a.collision_object.hasTag("KTUITokenEquipment") then
     local newState = a.collision_object.getDescription()
     local imageUrl = a.collision_object.getCustomObject().image
     local stackable = a.collision_object.getCustomObject().stackable
+    local equipment = a.collision_object.hasTag("KTUITokenEquipment")
     a.collision_object.destruct()
+
+    if equipment == true then
+      stackable = false
+    end
+
     -- If the token is new to the miniature, it adds it to the list of tokens
     if state.attachments[newState] == nil then
-      state.attachments[newState] = { name = newState, url = imageUrl, removable = true, stackable = stackable, secret = false, active = true, stack = 1 }
+      state.attachments[newState] = { name = newState, url = imageUrl, removable = true, stackable = stackable, secret = false, equipment = equipment, active = true, stack = 1 }
       saveState()
       createUI()
     else
@@ -588,14 +600,20 @@ function onCollisionEnter(a)
     local removable = newStateClass.removable
     local stackable = newStateClass.stackable
     local secret = newStateClass.secret
+    local equipment = newStateClass.equipment
 
     if secret == true then
       removable = false
       stackable = false
+      equipment = false
     end
+    if equipment == true then
+      stackable = false
+    end
+
     -- If the token is new to the miniature, it adds it to the list of tokens
     if state.attachments[newState] == nil then
-      state.attachments[newState] = { name = newState, url = imageUrl, removable = removable, stackable = stackable, secret = secret, active = true, stack = 0 }
+      state.attachments[newState] = { name = newState, url = imageUrl, removable = removable, stackable = stackable, secret = secret, equipment = equipment, active = true, stack = 0 }
       saveState()
       createUI()
     else
