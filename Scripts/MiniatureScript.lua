@@ -408,12 +408,12 @@ function callback_Attack(i)
     if diceBag == nil or roller == nil then return end
 
     local spawnLocation = roller.getPosition()
-    spawnLocation.y = spawnLocation.y + 1
+    spawnLocation.y = spawnLocation.y
     local remainingDice = tonumber(weaponAttacks)
     while(remainingDice > 0)
     do
       diceBag.takeObject({ position = spawnLocation })
-      spawnLocation.y = spawnLocation.y + 1
+      spawnLocation.y = spawnLocation.y
       remainingDice = remainingDice -1
     end
 
