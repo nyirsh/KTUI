@@ -3,6 +3,13 @@ Kill Team Command Node UI Extender - A tool to improve KT Command Node UI experi
 
 ## Contents
 How to use the mod:
+* [Prepare miniatures](#prepare-miniatures)
+* [Increase and decrease wounds](#increase-and-decrease-wounds)
+* [Change orders](#change-orders)
+* [Interacting with tokens](#interacting-with-tokens)
+* [Save and load positions](#save-and-load-positions)
+* [Display ranges](#display-ranges)
+* [Attack with weapons](#attack-with-weapons)
 
 How to create tokens:
 * [One-sided tokens](#one-sided-tokens)
@@ -15,6 +22,20 @@ Other stuff:
 * [Credits](#credits)
 * [Reserved names](#reserved-names)
 * [Order tokens](#order-tokens)
+
+--------------------------------------
+# How to use the mod
+
+## Prepare the miniatures
+## Increase and decrease wounds
+## Change orders
+## Interacting with tokens
+## Save and load positions
+## Display ranges
+## Attack with weapons
+
+--------------------------------------
+# How to create tokens
 
 ## One-sided tokens
 * Spawn a `Token` item (`Objects > Components > Custom > Token`)
@@ -85,6 +106,7 @@ Please refrain from creating tokens this way if you're not familiar on how to im
 If you wish it is also possible to bundle all the tokens up into a single state-driven token. To do so, make sure that all the tokens you're about to bundle up together have the proper tags / scripts / descriptions before merging them all together in the same state
 
 --------------------------------------
+# Other stuff
 
 ## Credits
 * [MoonkeyMod](https://steamcommunity.com/id/moonkey2010) for creating the [KT Map Base Table](https://steamcommunity.com/sharedfiles/filedetails/?id=2574389665)
