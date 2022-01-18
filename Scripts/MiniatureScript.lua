@@ -565,15 +565,17 @@ function onCollisionEnter(a)
     local imageUrl = a.collision_object.getCustomObject().image
     local stackable = a.collision_object.getCustomObject().stackable
     local equipment = a.collision_object.hasTag("KTUITokenEquipment")
+    local removable = true
     a.collision_object.destruct()
 
     if equipment == true then
       stackable = false
+      removable = false
     end
 
     -- If the token is new to the miniature, it adds it to the list of tokens
     if state.attachments[newState] == nil then
-      state.attachments[newState] = { name = newState, url = imageUrl, removable = true, stackable = stackable, secret = false, equipment = equipment, active = true, stack = 1 }
+      state.attachments[newState] = { name = newState, url = imageUrl, removable = removable, stackable = stackable, secret = false, equipment = equipment, active = true, stack = 1 }
       saveState()
       createUI()
     else
