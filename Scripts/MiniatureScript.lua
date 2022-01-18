@@ -365,6 +365,11 @@ function onLoad(ls)
   self.addContextMenuItem("Save place", function(pc) savePosition() end)
   self.addContextMenuItem("Load place", function(pc) loadPosition() end)
 
+  for i, w in ipairs(state.info.weapons) do
+    local weaponName = w.name:gsub("%(R%)", "[1E87FF]R[-]"):gsub("%(M%)", "[F4641D]M[-]")
+    self.addContextMenuItem(weaponName, function(pc) callback_Attack(i) end)
+  end
+
   local taglist = {state.modelid, "Operative"}
   for _,category in pairs(state.info.categories) do
     table.insert(taglist, category)
@@ -375,6 +380,45 @@ function onLoad(ls)
   refreshUI()
   refreshVectors()
 end
+
+function callback_Attack(i)
+    local weaponName = state.info.weapons[i].name:gsub("%(R%)", "[1E87FF]R[-]"):gsub("%(M%)", "[F4641D]M[-]")
+    local weaponAttacks = state.info.weapons[i].stats["A"]
+    local weaponLimit = state.info.weapons[i].stats["WS/BS"]
+    print("Attacking with "..weaponName.." "..weaponAttacks.."D6 @ "..weaponLimit)
+
+    local op = getOwningPlayer()
+    local color = "Red"
+    local diceBag = nil
+    local roller = nil
+    if op ~= nil then
+      if op.color ~= "Red" then color = "Blue" end
+    end
+    print("KTUIDice"..color)
+    for _, obj in ipairs(getAllObjects()) do
+      if obj.hasTag("KTUIDice"..color) then
+        obj.destruct()
+      elseif obj.hasTag("KTUIDiceBag"..color) then
+        diceBag = obj
+      elseif obj.hasTag("KTUIDiceRoller"..color) then
+        roller = obj
+      end
+    end
+
+    if diceBag == nil or roller == nil then return end
+
+    local spawnLocation = roller.getPosition()
+    spawnLocation.y = spawnLocation.y + 1
+    local remainingDice = tonumber(weaponAttacks)
+    while(remainingDice > 0)
+    do
+      diceBag.takeObject({ position = spawnLocation })
+      spawnLocation.y = spawnLocation.y + 1
+      remainingDice = remainingDice -1
+    end
+
+end
+
 
 function setEngage()
   state.order = "Engage"
@@ -589,11 +633,13 @@ function onCollisionEnter(a)
       state.attachments[newState] = { name = newState, url = imageUrl, removable = removable, stackable = stackable, secret = false, equipment = equipment, active = true, stack = 1 }
       saveState()
       createUI()
+      refreshUI()
     else
       if state.attachments[newState].url ~= imageUrl then
         state.attachments[newState].url = imageUrl
         saveState()
         createUI()
+        refreshUI()
       end
 
       if state.attachments[newState].active == false then
@@ -629,11 +675,15 @@ function onCollisionEnter(a)
       state.attachments[newState] = { name = newState, url = imageUrl, removable = removable, stackable = stackable, secret = secret, equipment = equipment, active = true, stack = 0 }
       saveState()
       createUI()
+      refreshUI()
+      mustRefresh = true
     else
       if state.attachments[newState].url ~= imageUrl then
         state.attachments[newState].url = imageUrl
         saveState()
         createUI()
+        refreshUI()
+        mustRefresh = true
       end
 
       if state.attachments[newState].active == false then
@@ -646,8 +696,12 @@ function onCollisionEnter(a)
   if mustRefresh then
     saveState()
     refreshUI()
+    self.reload()
   end
-  Wait.frames(function() isColliding = false end, 60)
+  Wait.frames(function()
+    isColliding = false
+    self.reload()
+  end, 30)
 end
 
 
