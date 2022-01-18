@@ -1,5 +1,5 @@
 # KT Command Node UI Extender
-Kill Team UI - A tool to improve Kill Team's TTS games QoL
+Kill Team Command Node UI Extender - A tool to improve KT Command Node UI experience
 
 ## Credits
 * [MoonkeyMod](https://steamcommunity.com/id/moonkey2010) for creating the [KT Map Base Table](https://steamcommunity.com/sharedfiles/filedetails/?id=2574389665)
