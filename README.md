@@ -9,9 +9,13 @@ Kill Team UI - A tool to improve Kill Team's TTS games QoL
 ## How to create
 * [One-sided tokens](#one-sided-tokens)
 * [One-sided advanced tokens](#one-sided-advanced-tokens)
+* [Simple equipment tokens](#simple-equipment-tokens)
 * [Two-sided tokens](#two-sided-tokens)
 * [Bundling tokens together](#bundling-tokens-together)
 * [Reserved names](#reserved-names)
+
+The following are instructions for mod makers, please simply ignore these instructions:
+* [Order tokens](#order-tokens)
 
 ## One-sided tokens
 * Spawn a `Token` item (`Objects > Components > Custom > Token`)
@@ -44,6 +48,18 @@ Description: Minus_1_blue
 `secret`: if set to `true` makes the token only visible to the miniature's owner, after being applied to it, until it is clicked on. Useful for secret roles specific tokens (ie. Interloper). It will also override `removable`, `stackable` and `equipment` to `false`.
 
 `equipment`: if set to `true` makes the token will be considered as an equipment one. It will also override `stackable` to `false`.
+
+## Simple equipment tokens
+* Spawn a `Token` item (`Objects > Components > Custom > Token`)
+* Add the url of the token's `Image` and click on `Import`
+* Right click on the newly created token then access the `Tags` menu voice and add a new tag called `KTUITokenEquipment` or highlight it from the list if already present
+* Right click on the token add give it a unique description that doesn't contain any spaces or new lines and nothing else. Please refer to [Reserved names](#reserved-names) to check a list of already reserved names
+* You can also give it a fancy name but it's not mandatory
+```
+Name: Climbing Rope
+Description: Kommando_EQ_Climbing_Rope
+```
+Please be aware that any token created with this method will have the `removable` parameter automatically set to `false`, it is therefore better to use an [One-sided advanced tokens](#one-sided-advanced-tokens) if you're creating a "Limited" kind of equipment.
 
 ## Two-sided tokens
 Please refrain from creating tokens this way if you're not familiar on how to import custom models or how the TTS scripts work
@@ -84,3 +100,12 @@ Please do not use, under any circumstances, the following names/descriptions for
 * Exclamation_red
 * Crosshair_blue
 * Crosshair_red
+
+--------------------------------------
+
+## Order tokens
+* Spawn a non-stackable `Token` item (`Objects > Components > Custom > Token`)
+* Add the url of the token's `Image` and click on `Import`
+* Right click on the newly created token then access the `Tags` menu voice and add a new tag called `KTUITokenOrder` or highlight it from the list if already present
+* Right click on the token add give it any of these descriptions: `Engage_ready`, `Engage_activated`, `Conceal_ready`, `Conceal_activated`
+* You can also give it a fancy name but it's not mandatory
