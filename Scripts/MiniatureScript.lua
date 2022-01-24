@@ -82,6 +82,17 @@ function onNumberTyped( pc, n )
   rangeShown = n > 0
   measureColor = Color.fromString(pc)
   measureRange = n
+
+  sphereRange = getCircleVectorPoints(measureRange - modelMeasureLineRadius + 0.05, 0.125, 1)[1].x * 2
+  Physics.cast({
+        origin       = self.getPosition(),
+        direction    = {0,1,0},
+        type         = 2,
+        size         = {sphereRange,sphereRange,sphereRange},
+        max_distance = 0,
+        debug        = true,
+    })
+
   refreshVectors(true)
   Player[pc].broadcast(string.format("%d\"", measureRange))
 end
@@ -366,7 +377,11 @@ function onLoad(ls)
   self.addContextMenuItem("Load place", function(pc) loadPosition() end)
 
   for i, w in ipairs(state.info.weapons) do
-    local weaponName = w.name:gsub("%(R%)", "[1E87FF]R[-]"):gsub("%(M%)", "[F4641D]M[-]")
+    local weaponName = string.sub(w.name,1,21):gsub("%(R%)", "[1E87FF]R[-]"):gsub("%(M%)", "[F4641D]M[-]")
+  	if string.len(w.name) > 21 then
+  		weaponName = weaponName.."..."
+  	end
+
     self.addContextMenuItem(weaponName, function(pc) callback_Attack(i) end)
   end
 
@@ -385,7 +400,13 @@ function callback_Attack(i)
     local weaponName = state.info.weapons[i].name:gsub("%(R%)", "[1E87FF]R[-]"):gsub("%(M%)", "[F4641D]M[-]")
     local weaponAttacks = state.info.weapons[i].stats["A"]
     local weaponLimit = state.info.weapons[i].stats["WS/BS"]
-    print("Attacking with "..weaponName.." "..weaponAttacks.."D6 @ "..weaponLimit)
+
+	if isInjured() == true then
+		weaponLimit = weaponLimit + 1
+		print("Attacking with "..weaponName.." "..weaponAttacks.."D6 @ [FF0000]"..weaponLimit.."+[-]")
+	else
+		print("Attacking with "..weaponName.." "..weaponAttacks.."D6 @ "..weaponLimit)
+	end
 
     local op = getOwningPlayer()
     local color = "Red"
@@ -394,7 +415,7 @@ function callback_Attack(i)
     if op ~= nil then
       if op.color ~= "Red" then color = "Blue" end
     end
-    print("KTUIDice"..color)
+
     for _, obj in ipairs(getAllObjects()) do
       if obj.hasTag("KTUIDice"..color) then
         obj.destruct()
