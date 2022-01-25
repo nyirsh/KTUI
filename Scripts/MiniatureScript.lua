@@ -407,37 +407,21 @@ function callback_Attack(i)
 	else
 		print("Attacking with "..weaponName.." "..weaponAttacks.."D6 @ "..weaponLimit)
 	end
-
     local op = getOwningPlayer()
-    local color = "Red"
-    local diceBag = nil
     local roller = nil
-    if op ~= nil then
-      if op.color ~= "Red" then color = "Blue" end
+    if op == nil then
+      return
     end
 
     for _, obj in ipairs(getAllObjects()) do
-      if obj.hasTag("KTUIDice"..color) then
-        obj.destruct()
-      elseif obj.hasTag("KTUIDiceBag"..color) then
-        diceBag = obj
-      elseif obj.hasTag("KTUIDiceRoller"..color) then
+      if obj.hasTag("KTUIDiceRoller") then
         roller = obj
       end
     end
 
-    if diceBag == nil or roller == nil then return end
-
-    local spawnLocation = roller.getPosition()
-    spawnLocation.y = spawnLocation.y
-    local remainingDice = tonumber(weaponAttacks)
-    while(remainingDice > 0)
-    do
-      diceBag.takeObject({ position = spawnLocation })
-      spawnLocation.y = spawnLocation.y
-      remainingDice = remainingDice -1
-    end
-
+    if roller == nil then return end
+    Player[op.color].clearSelectedObjects()
+    roller.call("askSpawn",{ player = op, number = weaponAttacks, auto = 1})
 end
 
 
