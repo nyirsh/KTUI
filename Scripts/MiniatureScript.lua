@@ -240,10 +240,15 @@ function refreshUI()
     end
   end
 
+  local position = "0 0 -"..tostring(state.uiHeight*100*scaleFactorZ)
+
+  if state.isHorizontal == true then
+    position = "0 -"..tostring(60*scaleFactorY).." -"..tostring(20*scaleFactorZ)
+  end
   local xmlTable = [[<Defaults>
   <Image class="statusDisplay" hideAnimation="Shrink" showAnimation="Grow" preserveAspect="true" />
 </Defaults>
-<Panel position="0 0 -]]..tostring(state.uiHeight*100*scaleFactorZ)..[[" width="100" height="100" rotation="0 0 ]]..(state.uiAngle or 0)..[[" scale="]]..scaleFactorX..[[ ]]..scaleFactorY..[[ ]]..scaleFactorZ..[[">
+<Panel position="]]..position..[[" width="100" height="100" rotation="0 0 ]]..(state.uiAngle or 0)..[[" scale="]]..scaleFactorX..[[ ]]..scaleFactorY..[[ ]]..scaleFactorZ..[[">
 
   <HorizontalLayout spacing="3" width="@totalSecret" height="20" offsetXY="-30 -10">
     --@EquipmentPlaceholder
@@ -388,6 +393,9 @@ function onLoad(ls)
 
     self.addContextMenuItem(weaponName, function(pc) callback_Attack(i) end)
   end
+
+  self.addContextMenuItem("Change UI position", function(pc) if state.isHorizontal ~= true then state.isHorizontal = true else state.isHorizontal = false end refreshUI() end)
+
 
   local taglist = {state.modelid, "Operative"}
   for _,category in pairs(state.info.categories) do
