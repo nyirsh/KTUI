@@ -1,6 +1,10 @@
 # <img src="https://raw.githubusercontent.com/nyirsh/KTUI/main/Resources/Thumb.png" width="50px" height="50px"> KT Command Node UI Extender
 Kill Team Command Node UI Extender - A tool to improve KT Command Node UI experience
 
+If you like this mod, please consider supporting me and the people I worked with. Everything I did is open source for people to use or take inspiration from, completely for free in my own free time. Thank you very much for using my mod whether you decide to buy me a coffee or not.
+
+<a href="https://www.buymeacoffee.com/nyirsh"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=nyirsh&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"></a>
+
 ## Contents
 How to use the mod:
 * [Prepare miniatures](#prepare-miniatures)
