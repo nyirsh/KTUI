@@ -90,7 +90,7 @@ function onNumberTyped( pc, n )
         type         = 2,
         size         = {sphereRange,sphereRange,sphereRange},
         max_distance = 0,
-        debug        = true,
+        debug        = false,
     })
 
   refreshVectors(true)
