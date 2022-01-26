@@ -130,6 +130,7 @@ end
 
 -- Nyirsh: a bit redundant with the RefreshUI, maybe we can put these two together
 function refreshWounds()
+
   local w = state.wounds
   local m = state.stats.W
 
@@ -149,14 +150,29 @@ function refreshWounds()
     return string.format("{%d/%d}", w, m)
   end
 
-  self.UI.setValue("ktcnid-status-wounds", uiwstring())
 
+  self.UI.setValue("ktcnid-status-wounds", uiwstring())
   local nname = self.getName()
+
   if string.find(nname, "%b{}") == nil then
     nname = "{} "..nname
+  else
+    nname = string.sub(nname, string.find(nname, "%b{}"), 100)
   end
 
-  self.setName(string.gsub(nname, "%b{}", namewstring()))
+  local norder = "[FF5500]"
+  if state.ready == false then
+    norder = "[999999]"
+  end
+
+  if state.order == "Conceal" then
+    norder = norder.."C"
+  else
+    norder = norder.."E"
+  end
+  norder = norder.."[-] "
+
+  self.setName(string.gsub(nname, "%b{}", norder..namewstring()))
 end
 
 function callback_attachment(player, value, id)
@@ -209,6 +225,7 @@ function callback_orders(player, value, id)
     end
   end
   refreshUI()
+  refreshWounds()
 end
 
 function refreshUI()
@@ -226,10 +243,10 @@ function refreshUI()
   local sv = secretVisibility()
 
   local off_injured = -35
-  local off_order = 50
+  local off_order = 65
   if state.display_arrows then
     off_injured = -75
-    off_order = 80
+    off_order = 95
   end
 
   local p = getOwningPlayer()
@@ -260,7 +277,7 @@ function refreshUI()
 		<Button text="-" width="30" height="30" offsetXY="-65 0" onClick="damage" active="]]..tostring((state.display_arrows or false))..[[" />
 		<Text id="ktcnid-status-wounds" text="]]..string.format("%d/%d", state.wounds, state.stats.W)..[[" resizeTextForBestFit="true" color="#ffffff" onClick="toggleArrows" />
 		<Button text="+" width="30" height="30" offsetXY="65 0" onClick="heal" active="]]..tostring((state.display_arrows or false))..[[" />
-    <Image id="ktcnid-status-order" image="]]..getCurrentOrder()..[[" rectAlignment="MiddleRight" width="40" height="40" offsetXY="]]..off_order..[[ 0" active="true" onClick="callback_orders" />
+    <Image id="ktcnid-status-order" image="]]..getCurrentOrder()..[[" rectAlignment="MiddleRight" width="55" height="55" offsetXY="]]..off_order..[[ 0" active="true" onClick="callback_orders" />
 	</Panel>
   <HorizontalLayout spacing="3" width="@totalAtt" height="30" offsetXY="]]..circOffset(80, 270)..[[">
     --@AttachmentPlaceholder
@@ -406,6 +423,7 @@ function onLoad(ls)
   createUI()
   refreshUI()
   refreshVectors()
+  Wait.frames(function() refreshWounds() end, 1)
 end
 
 function callback_Attack(i)
