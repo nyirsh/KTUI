@@ -83,16 +83,20 @@ function onNumberTyped( pc, n )
   measureColor = Color.fromString(pc)
   measureRange = n
 
-  sphereRange = getCircleVectorPoints(measureRange - modelMeasureLineRadius + 0.05, 0.125, 1)[1].x * 2
-  Physics.cast({
-        origin       = self.getPosition(),
-        direction    = {0,1,0},
-        type         = 2,
-        size         = {sphereRange,sphereRange,sphereRange},
-        max_distance = 0,
-        debug        = false,
-    })
+  scaleFactor = 1/self.getScale().x
 
+  if lastRange == measureRange then
+    sphereRange = getCircleVectorPoints(measureRange - modelMeasureLineRadius + 0.05, 0.125, 1)[1].x * 2 / scaleFactor
+    Physics.cast({
+          origin       = self.getPosition(),
+          direction    = {0,1,0},
+          type         = 2,
+          size         = {sphereRange,sphereRange,sphereRange},
+          max_distance = 0,
+          debug        = true,
+      })
+  end
+  lastRange = measureRange
   refreshVectors(true)
   Player[pc].broadcast(string.format("%d\"", measureRange))
 end
