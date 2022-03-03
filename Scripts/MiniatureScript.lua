@@ -641,6 +641,11 @@ function onCollisionEnter(a)
   if isColliding == true then
     return
   end
+
+  if a.collision_object.getLock() == true then
+    return
+  end
+
   isColliding = true
 
   local mustRefresh = false
