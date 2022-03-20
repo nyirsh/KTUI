@@ -31,12 +31,30 @@ Other stuff:
 # How to use the mod
 
 ## Prepare the miniatures
+After you prepared your roster using [KT Command Node](https://steamcommunity.com/sharedfiles/filedetails/?id=2614731381&searchtext=Command+node), import it to a table that has the `'KT UI Extender Mat` on it, place your miniatures on top and click on `Extend KT UI`. You don't have to save the newly processed roster if you don't want to, in fact, you can import the mat yourself on any table and re-extend the miniatures every single time which is also the way to update the models with new functionalities in case of need.
+
 ## Increase and decrease wounds
+By clicking on the health bar of any miniature, you can toggle `+` and `-` buttons to appear/disapper. You can use those buttons to adjust your miniature's health. A wound token will also be automatically be displayed if your model has less than half remaing health.
+
 ## Change orders
+You have access to several ways to change the orders on your miniatures, just use the ones you prefer:
+* Left click on the token itself to swap between `Ready` / `Activated` states
+* Right click on the token to swap between `Engage` / `Conceal` orders while keeping the active status
+* Right click on the miniature and click on either `Engange` or `Conceal` to assign that `Ready` order to the miniature
+* If you have imported the `KT UI Extender Mat` on the table, by putting any number of miniatures on it and clicking on either `All Engage` or `All Conceal`. Only the miniatures currently on the mat will be affected
+
 ## Interacting with tokens
 ## Save and load positions
+
 ## Display ranges
+Hover your mouse over a miniature and start typing numbers to display a `circular range` of your choise around the miniature. For example, if you type `5` you'll see a `5''` circle around your miniature.
+If a miniature is already displaying a range, if you type the same number again it will briefly show you a `spherical range` around the miniature, useful to check distances between objects on different heights. You can do this any amount of times.
+By pressing `R` instead of a number, you'll make the miniature display a `1''`, `2''`, `3''` and `6''` `circular ranges`
+To stop showing ranges, just press `0`.
+`PLEASE BE AWARE: you can only use the numbers of your keyboard that are above the letters, the numpad is not supported.`
+
 ## Attack with weapons
+Right click on a miniature and you'll see an amount of menus accordingly to the amount of weapons that model has, they're all marked as either `M` or `R` to show if they're Melee or Ranged weapons. By doing so a message will be displayed in chat with your intention and the dice roller will also automatically perform the roll for you -whenever the new roller will be implemented into the base table
 
 --------------------------------------
 # How to create tokens
