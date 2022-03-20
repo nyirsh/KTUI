@@ -31,7 +31,7 @@ Other stuff:
 # How to use the mod
 
 ## Prepare the miniatures
-After you prepared your roster using [KT Command Node](https://steamcommunity.com/sharedfiles/filedetails/?id=2614731381&searchtext=Command+node), import it to a table that has the `'KT UI Extender Mat` on it, place your miniatures on top and click on `Extend KT UI`. You don't have to save the newly processed roster if you don't want to, in fact, you can import the mat yourself on any table and re-extend the miniatures every single time which is also the way to update the models with new functionalities in case of need.
+After you prepared your roster using [KT Command Node](https://steamcommunity.com/sharedfiles/filedetails/?id=2614731381&searchtext=Command+node), import it to a table that has the `KT UI Extender Mat` on it, place your miniatures on top and click on `Extend KT UI`. You don't have to save the newly processed roster if you don't want to, in fact, you can import the mat yourself on any table and re-extend the miniatures every single time which is also the way to update the models with new functionalities in case of need.
 
 ## Increase and decrease wounds
 By clicking on the health bar of any miniature, you can toggle `+` and `-` buttons to appear/disapper. You can use those buttons to adjust your miniature's health. A wound token will also be automatically be displayed if your model has less than half remaing health.
@@ -47,9 +47,9 @@ You have access to several ways to change the orders on your miniatures, just us
 ## Save and load positions
 
 ## Display ranges
-Hover your mouse over a miniature and start typing numbers to display a `circular range` of your choise around the miniature. For example, if you type `5` you'll see a `5''` circle around your miniature.
+Hover your mouse over a miniature and start typing numbers to display a `circular range` of your choise around the miniature. For example, if you type `5` you'll see a `5"` circle around your miniature.
 If a miniature is already displaying a range, if you type the same number again it will briefly show you a `spherical range` around the miniature, useful to check distances between objects on different heights. You can do this any amount of times.
-By pressing `R` instead of a number, you'll make the miniature display a `1''`, `2''`, `3''` and `6''` `circular ranges`
+By pressing `R` instead of a number, you'll make the miniature display a `1"`, `2"`, `3"` and `6"` `circular ranges`
 To stop showing ranges, just press `0`.
 `PLEASE BE AWARE: you can only use the numbers of your keyboard that are above the letters, the numpad is not supported.`
 
