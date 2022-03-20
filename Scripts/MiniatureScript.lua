@@ -97,7 +97,7 @@ function onNumberTyped( pc, n )
       })
   end
   lastRange = measureRange
-  refreshVectors(true)
+  refreshVectors()
   Player[pc].broadcast(string.format("%d\"", measureRange))
 end
 
@@ -275,7 +275,7 @@ function refreshUI()
 	<Panel color="#808080" outline="#FF5500" outlineSize="2 2" width="80" height="25" offsetXY="]]..circOffset(40, 270)..[[">
     <Image id="ktcnid-status-injured" image="Wound_]]..wound_color..[[" width="30" height="30" rectAlignment="MiddleLeft" offsetXY="]]..off_injured..[[ 0" active="]]..tostring(isInjured())..[[" />
 		<Button text="-" width="30" height="30" offsetXY="-65 0" onClick="damage" active="]]..tostring((state.display_arrows or false))..[[" />
-		<Text id="ktcnid-status-wounds" text="]]..string.format("%d/%d", state.wounds, state.stats.W)..[[" resizeTextForBestFit="true" color="#ffffff" onClick="toggleArrows" />
+		<Text id="ktcnid-status-wounds" text="]]..string.format("%d/%d", state.wounds or 0, state.stats.W or 0)..[[" resizeTextForBestFit="true" color="#ffffff" onClick="toggleArrows" />
 		<Button text="+" width="30" height="30" offsetXY="65 0" onClick="heal" active="]]..tostring((state.display_arrows or false))..[[" />
     <Image id="ktcnid-status-order" image="]]..getCurrentOrder()..[[" rectAlignment="MiddleRight" width="55" height="55" offsetXY="]]..off_order..[[ 0" active="true" onClick="callback_orders" />
 	</Panel>
@@ -361,7 +361,20 @@ function createUI()
 end
 
 function isInjured()
-  return state.wounds < state.stats.W / 2
+  return state.stats.W and state.wounds < state.stats.W / 2 or false
+end
+
+function notify(pc, message)
+  if type(pc) == "userdata" then
+    pc = pc.color
+  end
+  local owner = getOwningPlayer()
+  if pc == owner.color then
+    owner.broadcast(message)
+  else
+    owner.broadcast(string.format("%s: %s", Player[pc].name, message))
+    Player[pc].broadcast(message)
+  end
 end
 
 function toggleArrows()
@@ -371,22 +384,75 @@ end
 
 function damage(pc)
   local si = isInjured()
-  state.wounds = math.max(0, state.wounds - 1)
+  state.wounds = math.max(0, (state.wounds or 0) - 1)
   if not si and isInjured() then
     self.UI.show("ktcnid-status-injured")
   end
   saveState()
   refreshWounds()
+  notify(pc, string.format("%s took damage", self.getName()))
 end
 
 function heal(pc)
   local si = isInjured()
-  state.wounds = math.min(state.stats.W, state.wounds + 1)
+  state.wounds = math.min((state.stats.W or 0), (state.wounds or 0) + 1)
   if si and not isInjured() then
     self.UI.hide("ktcnid-status-injured")
   end
   saveState()
   refreshWounds()
+  notify(pc, string.format("%s recovered", self.getName()))
+end
+
+function kill(pc)
+  state.wounds = 0
+  saveState()
+  refreshWounds()
+  notify(pc, string.format("%s KO", self.getName()))
+end
+
+function updateStats(pc)
+  if getOwningPlayer().color ~= pc then
+    notify(pc, "Only the model's owner can update stats")
+    return
+  end
+  notify(pc, "Updating stats from values in description")
+  local statsub = {}
+  local prevW = state.stats.W or 0
+  local wounds = state.wounds or 0
+  local desc = self.getDescription() or ""
+  local innerUpdate = function(stat)
+    local sstring = "%[84E680%]" .. stat .. "%[%-%]%s*%[ffffff%]%s*(%d+).*%[%-%]"
+    for match in string.gmatch(desc, "%b[]") do
+      local s = match:match(sstring)
+      if s then
+        local ss = state.stats[stat]
+        table.insert(statsub, string.format("%s = %s", stat, s))
+        if ss and ss == tonumber(s) then return false end
+        state.stats[stat] = tonumber(s)
+
+        -- notify(pc, string.format("%s set to %s", stat, s))
+        return true
+      end
+    end
+    table.insert(statsub, string.format("%s = [ff0000]X[-]", stat))
+    return false
+  end
+  innerUpdate("M")
+  innerUpdate("APL")
+  innerUpdate("GA")
+  innerUpdate("DF")
+  innerUpdate("SV")
+  if innerUpdate("W") then
+    if wounds == prevW then
+      state.wounds = state.stats.W or 0
+    else
+      state.wounds = min(state.stats.W or 0)
+    end
+    refreshWounds()
+  end
+  saveState()
+  notify(pc, table.concat( statsub, ", "))
 end
 
 function onLoad(ls)
@@ -398,9 +464,10 @@ function onLoad(ls)
 
   self.addContextMenuItem("Engage", function(pc)  setEngage() end)
   self.addContextMenuItem("Conceal", function(pc)  setConceal() end)
-
+  self.addContextMenuItem("Kill", kill)
   self.addContextMenuItem("Save place", function(pc) savePosition() end)
   self.addContextMenuItem("Load place", function(pc) loadPosition() end)
+  self.addContextMenuItem("Update stats", updateStats)
 
   for i, w in ipairs(state.info.weapons) do
     local weaponName = string.sub(w.name,1,21):gsub("%(R%)", "[1E87FF]R[-]"):gsub("%(M%)", "[F4641D]M[-]")
@@ -422,7 +489,7 @@ function onLoad(ls)
   self.addTag("KTUIMini")
   createUI()
   refreshUI()
-  refreshVectors()
+  refreshVectors(true)
   Wait.frames(function() refreshWounds() end, 1)
 end
 
