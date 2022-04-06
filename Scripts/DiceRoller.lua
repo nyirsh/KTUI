@@ -94,7 +94,6 @@ function onLoad()
 end
 
 function askSpawn(args)
-  zoom(args["player"])
   spawnKill(args["player"],args["number"],args["auto"])
 end
 
@@ -609,12 +608,16 @@ function printresultsTable(playerColor)
     end
   end
 
+  local message = ""
   local time = '[' .. os.date("%H") .. ':' .. os.date("%M") .. ':' .. os.date("%S") .. ' UTC] '
   if playerColor == nil then
-    printToAll('\n*******************************************************\n' .. time .. '~UNKNOWN PLAYER~ rolls:\n' .. result, {1, 1, 1})
+	message = '\n*******************************************************\n' .. time .. '~UNKNOWN PLAYER~ rolls:\n' .. result
+    printToAll(message, {1, 1, 1})
   else
-    printToAll('\n*******************************************************\n' .. time .. Player[playerColor].steam_name .. ' rolls:\n' .. result, stringColorToRGB(playerColor))
+	message = '\n*******************************************************\n' .. time .. Player[playerColor].steam_name .. ' rolls:\n' .. result
+    printToAll(message, stringColorToRGB(playerColor))
   end
+  broadcast(message)
 
   for k,v in ipairs(resultsTable) do
 	   resultsTable[k] = 0
