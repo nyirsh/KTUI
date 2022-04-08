@@ -99,7 +99,7 @@ end
 
 function spawnKill(player,number,autoRoll)
   deleteDice(obj, player.color)
-  if color ~= "Blue" and color ~= "Red" then
+  if player.color ~= "Blue" and player.color ~= "Red" then
     return
   end
 
