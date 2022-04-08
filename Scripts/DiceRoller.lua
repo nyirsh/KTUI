@@ -99,6 +99,9 @@ end
 
 function spawnKill(player,number,autoRoll)
   deleteDice(obj, player.color)
+  if color ~= "Blue" and color ~= "Red" then
+    return
+  end
 
   for i=1, number, 1 do
     if dice6Image == '' then
@@ -611,13 +614,13 @@ function printresultsTable(playerColor)
   local message = ""
   local time = '[' .. os.date("%H") .. ':' .. os.date("%M") .. ':' .. os.date("%S") .. ' UTC] '
   if playerColor == nil then
-	message = '\n*******************************************************\n' .. time .. '~UNKNOWN PLAYER~ rolls:\n' .. result
+    message = '\n*******************************************************\n' .. time .. '~UNKNOWN PLAYER~ rolls:\n' .. result
     printToAll(message, {1, 1, 1})
   else
-	message = '\n*******************************************************\n' .. time .. Player[playerColor].steam_name .. ' rolls:\n' .. result
+    message = '\n*******************************************************\n' .. time .. Player[playerColor].steam_name .. ' rolls:\n' .. result
     printToAll(message, stringColorToRGB(playerColor))
   end
-  broadcast(message)
+  broadcastToAll(message)
 
   for k,v in ipairs(resultsTable) do
 	   resultsTable[k] = 0
