@@ -20,6 +20,13 @@ function onLoad()
   rightColor = "Blue"
 
   self.registerCollisions(false)
+
+  Wait.frames(function()
+    displayGlobalUI()
+  end, 10)
+end
+
+function displayGlobalUI()
   guid = self.getGUID();
 
   if Global.UI.getAttribute("diceUI", "id") == nil then
@@ -419,6 +426,7 @@ function selectValueP(player,valueDice)
   if isPlayerAllowed(player, 'selectValueP') == false then return end
 
   if valueDice == "0" then
+    print("lala")
     local lowestSoFar = 7
     local lowestItemSoFar = nil
 
@@ -426,6 +434,7 @@ function selectValueP(player,valueDice)
     if player.color == leftColor then
       for key,value in pairs(diceTabL) do
         if value ~= nil and value.getRotationValue() < lowestSoFar then
+          print("lala")
           lowestSoFar = value.getRotationValue()
           lowestItemSoFar = value
         end
