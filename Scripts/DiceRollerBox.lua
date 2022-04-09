@@ -115,7 +115,6 @@ function onCollisionEnter(collision_info)
 		return
 	end
 	if playerColor ~= sidePlayerColor then
-		collision_info.collision_object.destruct()
 		return
 	end
 

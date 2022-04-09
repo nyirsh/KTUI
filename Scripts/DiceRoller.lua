@@ -48,14 +48,14 @@ function onLoad()
           <Button onClick="]]..guid..[[/roll()" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)" minWidth="80"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">ROLL</Text></Button>
           <VerticalLayout>
             <GridLayout cellSize="60 40" childAlignment="MiddleCenter">
-              <Button onClick="]]..guid..[[/selectValueP(1)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">All</Text></Button>
+              <Button onClick="]]..guid..[[/selectValueP(0)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="25" color="#CCCCCC">Low</Text></Button>
+              <Button onClick="]]..guid..[[/selectValueP(1)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">1</Text></Button>
               <Button onClick="]]..guid..[[/selectValueP(2)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">2-</Text></Button>
-              <Button onClick="]]..guid..[[/selectValueP(3)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">3-</Text></Button>
             </GridLayout>
             <GridLayout cellSize="60 40" childAlignment="MiddleCenter">
+              <Button onClick="]]..guid..[[/selectValueP(3)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">3-</Text></Button>
               <Button onClick="]]..guid..[[/selectValueP(4)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">4-</Text></Button>
               <Button onClick="]]..guid..[[/selectValueP(5)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">5-</Text></Button>
-              <Button onClick="]]..guid..[[/selectValueP(6)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">6-</Text></Button>
             </GridLayout>
           </VerticalLayout>
         </HorizontalLayout>
@@ -418,29 +418,48 @@ end
 function selectValueP(player,valueDice)
   if isPlayerAllowed(player, 'selectValueP') == false then return end
 
-  if destroyTimer == 1 then
-    destroyTimer = 0
-    destroyValueP(player,valueDice)
-  else
-    destroyTimer = 1
-    Wait.time(timerDestroy,0.25)
-    player.clearSelectedObjects()
+  if valueDice == "0" then
+    local lowestSoFar = 7
+    local lowestItemSoFar = nil
 
+    player.clearSelectedObjects()
     if player.color == leftColor then
       for key,value in pairs(diceTabL) do
-        if value != nil and value.getRotationValue() <= tonumber(valueDice) then
-          value.addToPlayerSelection(player.color)
+        if value ~= nil and value.getRotationValue() < lowestSoFar then
+          lowestSoFar = value.getRotationValue()
+          lowestItemSoFar = value
         end
       end
     else
       for key,value in pairs(diceTabR) do
-        if value != nil and value.getRotationValue() <= tonumber(valueDice) then
-          value.addToPlayerSelection(player.color)
+        if value ~= nil and value.getRotationValue() < lowestSoFar then
+          lowestSoFar = value.getRotationValue()
+          lowestItemSoFar = value
         end
       end
     end
-    getDiceNumber(player)
+
+    if lowestItemSoFar ~= nil then
+      lowestItemSoFar.addToPlayerSelection(player.color)
+    end
+    return
   end
+
+  player.clearSelectedObjects()
+  if player.color == leftColor then
+    for key,value in pairs(diceTabL) do
+      if value != nil and value.getRotationValue() <= tonumber(valueDice) then
+        value.addToPlayerSelection(player.color)
+      end
+    end
+  else
+    for key,value in pairs(diceTabR) do
+      if value != nil and value.getRotationValue() <= tonumber(valueDice) then
+        value.addToPlayerSelection(player.color)
+      end
+    end
+  end
+  getDiceNumber(player)
 end
 
 function selectValue(player,valueDice)

@@ -18,14 +18,14 @@
       <Button onClick="roll()" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)" minWidth="80"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">ROLL</Text></Button>
       <VerticalLayout >
           <GridLayout cellSize="80 80" childAlignment="MiddleCenter">
-            <Button onClick="selectValueP(1)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">All</Text></Button>
+            <Button onClick="selectValueP(0)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">Low</Text></Button>
+              <Button onClick="selectValueP(1)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">1</Text></Button>
               <Button onClick="selectValueP(2)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">2-</Text></Button>
-              <Button onClick="selectValueP(3)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">3-</Text></Button>
           </GridLayout>
           <GridLayout cellSize="80 80" childAlignment="MiddleCenter">
+              <Button onClick="selectValueP(3)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">3-</Text></Button>
               <Button onClick="selectValueP(4)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">4-</Text></Button>
               <Button onClick="selectValueP(5)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">5-</Text></Button>
-              <Button onClick="selectValueP(6)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">6-</Text></Button>
           </GridLayout>
       </VerticalLayout>
   </HorizontalLayout>
