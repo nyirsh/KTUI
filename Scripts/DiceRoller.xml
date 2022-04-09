@@ -1,0 +1,100 @@
+<Panel height="20" width="20" position = "-105 0 -20" rotation = "0 0 90" scale="0.2 0.25 0.2" childAlignment="MiddleCenter" id="menuB" >
+    <Button onClick="toggleMenu()" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)" minWidth="80"><Text fontStyle="bold" fontSize="50"  >ROLL</Text></Button>
+</Panel>
+<Panel height="160" width="680" position = "-82 0 -20" rotation = "0 0 90" scale="0.2 0.25 0.2" id="diceUI" childAlignment="MiddleCenter">
+  <HorizontalLayout id="panelID" childAlignment="MiddleCenter">
+      <VerticalLayout>
+          <GridLayout cellSize="80 80" childAlignment="MiddleCenter">
+              <Button onClick="spawnKill(1)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">1D</Text></Button>
+              <Button onClick="spawnKill(2)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">2D</Text></Button>
+              <Button onClick="spawnKill(3)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">3D</Text></Button>
+          </GridLayout>
+          <GridLayout cellSize="80 80" childAlignment="MiddleCenter">
+              <Button onClick="spawnKill(4)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">4D</Text></Button>
+              <Button onClick="spawnKill(5)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">5D</Text></Button>
+              <Button onClick="spawnKill(6)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">6D</Text></Button>
+          </GridLayout>
+      </VerticalLayout>
+      <Button onClick="roll()" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)" minWidth="80"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">ROLL</Text></Button>
+      <VerticalLayout >
+          <GridLayout cellSize="80 80" childAlignment="MiddleCenter">
+            <Button onClick="selectValueP(1)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">All</Text></Button>
+              <Button onClick="selectValueP(2)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">2-</Text></Button>
+              <Button onClick="selectValueP(3)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">3-</Text></Button>
+          </GridLayout>
+          <GridLayout cellSize="80 80" childAlignment="MiddleCenter">
+              <Button onClick="selectValueP(4)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">4-</Text></Button>
+              <Button onClick="selectValueP(5)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">5-</Text></Button>
+              <Button onClick="selectValueP(6)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="50" color="#CCCCCC">6-</Text></Button>
+          </GridLayout>
+      </VerticalLayout>
+  </HorizontalLayout>
+</Panel>
+<Panel height="500" width="180" position = "0 0 -20" rotation = "0 0 90" scale="0.2 0.25 0.2"  childAlignment="MiddleCenter">
+  <HorizontalLayout id="panelID" childAlignment="MiddleCenter">
+    <VerticalLayout >
+          <Text fontStyle="bold" fontSize="30" id="r1" color="#AAAAAA">0</Text>
+          <Text fontStyle="bold" fontSize="30" id="r2" color="#AAAAAA">0</Text>
+          <Text fontStyle="bold" fontSize="30" id="r3" color="#AAAAAA">0</Text>
+          <Text fontStyle="bold" fontSize="30" id="r4" color="#AAAAAA">0</Text>
+          <Text fontStyle="bold" fontSize="30" id="r5" color="#AAAAAA">0</Text>
+          <Text fontStyle="bold" fontSize="30" id="r6" color="#AAAAAA">0</Text>
+          <Text fontStyle="bold" fontSize="30" id="rA" color="#AAAAAA">0</Text>
+    </VerticalLayout>
+      <VerticalLayout >
+            <Button onClick="selectValue(1)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="45" color="#CCCCCC">1</Text></Button>
+            <Button onClick="selectValue(2)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="45" color="#CCCCCC">2</Text></Button>
+            <Button onClick="selectValue(3)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="45" color="#CCCCCC">3</Text></Button>
+            <Button onClick="selectValue(4)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="45" color="#CCCCCC">4</Text></Button>
+            <Button onClick="selectValue(5)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="45" color="#CCCCCC">5</Text></Button>
+            <Button onClick="selectValue(6)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="45" color="#CCCCCC">6</Text></Button>
+            <Button colors="rgba(0,0,0,0.0)|rgba(0,0,0,0.0)|rgba(0,0,0,0.0)|rgba(0,0,0,0.0)"><Text fontStyle="bold" fontSize="45" color="#CCCCCC">=</Text></Button>
+      </VerticalLayout>
+      <VerticalLayout >
+        <Text fontStyle="bold" fontSize="30" id="b1" color="#AAAAAA">0</Text>
+        <Text fontStyle="bold" fontSize="30" id="b2" color="#AAAAAA">0</Text>
+        <Text fontStyle="bold" fontSize="30" id="b3" color="#AAAAAA">0</Text>
+        <Text fontStyle="bold" fontSize="30" id="b4" color="#AAAAAA">0</Text>
+        <Text fontStyle="bold" fontSize="30" id="b5" color="#AAAAAA">0</Text>
+        <Text fontStyle="bold" fontSize="30" id="b6" color="#AAAAAA">0</Text>
+        <Text fontStyle="bold" fontSize="30" id="bA" color="#AAAAAA">0</Text>
+      </VerticalLayout>
+  </HorizontalLayout>
+</Panel>
+
+<Panel height="200" width="890" color="#cccccc" position = "-35 -15 -50" rotation = "0 0 90" scale="0.2 0.25 0.2"  childAlignment="MiddleCenter" id="tuto" active ="false">
+    <HorizontalLayout childAlignment="UpperCenter" padding="5 5 5 5" >
+          <Text fontStyle="bold" fontSize="25" color="#333333" alignment="UpperCenter">
+              ^
+            Drop the dice
+            in the box
+            to roll them</Text>
+          <Text fontStyle="bold" fontSize="25" color="#333333" alignment="UpperCenter">
+            ^
+            Click on any of
+             those buttons to
+           spawn the
+           corresponding
+               amount of dice
+          </Text>
+          <Text fontStyle="bold" fontSize="25" color="#333333" alignment="UpperCenter">
+            ^
+          Click to roll the
+           selected dice</Text>
+          <Text fontStyle="bold" fontSize="25" color="#333333" alignment="UpperCenter">
+            ^
+            Click to select
+            all dice with a value
+            less than an amount
+          </Text>
+    </HorizontalLayout>
+</Panel>
+
+
+<Panel height="210" width="200" position = "-134 0 -20" rotation = "0 0 90" scale="0.2 0.25 0.2" childAlignment="MiddleCenter" id="menu" color ="#555555" active="true">
+      <VerticalLayout >
+        <Button onClick="toggleRoll()" height="100" fontStyle="bold" fontSize="30" id="autoB" color="#cccccc">Auto Roll</Button>
+        <Button onClick="toggleUI()" height="100" fontStyle="bold" fontSize="30" id="UIB" color="#cccccc">Global UI</Button>
+        <Button onClick="toggleTuto()" height="100" fontStyle="bold" fontSize="30" id="tutoB" color="#cccccc">How to use</Button>
+      </VerticalLayout>
+</Panel>

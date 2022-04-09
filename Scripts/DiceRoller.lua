@@ -49,13 +49,13 @@ function onLoad()
           <VerticalLayout>
             <GridLayout cellSize="60 40" childAlignment="MiddleCenter">
               <Button onClick="]]..guid..[[/selectValueP(1)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">All</Text></Button>
-              <Button onClick="]]..guid..[[/selectValueP(2)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">2+</Text></Button>
-              <Button onClick="]]..guid..[[/selectValueP(3)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">3+</Text></Button>
+              <Button onClick="]]..guid..[[/selectValueP(2)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">2-</Text></Button>
+              <Button onClick="]]..guid..[[/selectValueP(3)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">3-</Text></Button>
             </GridLayout>
             <GridLayout cellSize="60 40" childAlignment="MiddleCenter">
-              <Button onClick="]]..guid..[[/selectValueP(4)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">4+</Text></Button>
-              <Button onClick="]]..guid..[[/selectValueP(5)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">5+</Text></Button>
-              <Button onClick="]]..guid..[[/selectValueP(6)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">6+</Text></Button>
+              <Button onClick="]]..guid..[[/selectValueP(4)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">4-</Text></Button>
+              <Button onClick="]]..guid..[[/selectValueP(5)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">5-</Text></Button>
+              <Button onClick="]]..guid..[[/selectValueP(6)" colors="#282C34|#b50f00|#C8C8C8|rgba(0.78,0.78,0.78,0.5)"><Text fontStyle="bold" fontSize="30" color="#CCCCCC">6-</Text></Button>
             </GridLayout>
           </VerticalLayout>
         </HorizontalLayout>
@@ -428,13 +428,13 @@ function selectValueP(player,valueDice)
 
     if player.color == leftColor then
       for key,value in pairs(diceTabL) do
-        if value != nil and value.getRotationValue() >= tonumber(valueDice) then
+        if value != nil and value.getRotationValue() <= tonumber(valueDice) then
           value.addToPlayerSelection(player.color)
         end
       end
     else
       for key,value in pairs(diceTabR) do
-        if value != nil and value.getRotationValue() >= tonumber(valueDice) then
+        if value != nil and value.getRotationValue() <= tonumber(valueDice) then
           value.addToPlayerSelection(player.color)
         end
       end
