@@ -1,15 +1,17 @@
 --Based off: https://steamcommunity.com/sharedfiles/filedetails/?id=726800282
 --Link for this mod: https://steamcommunity.com/sharedfiles/filedetails/?id=959360907
+-- Modified version to work with KTUI Dice Roller
 
 --Initialize Global Variables and pRNG Seed
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,7))+tonumber(tostring(os.clock()):reverse():sub(1,7)))
-ver = 'BCB-2018-12-16'
+ver = 'BCB-2018-12-16-KTUI'
 
 lastHolder = {}
 customFace = {4, 6, 8, 10, 12, 20}
 diceGuidFaces = {}
 sortedKeys = {}
 resultsTable = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+matGuid = "8afa65"
 
 --Determine the person who put the dice in the box.
 function onObjectPickedUp(playerColor, obj)
@@ -23,6 +25,16 @@ end
 
 --Reset description on load if empty.
 function onLoad(save_state)
+	side = "Left"
+
+  for _, obj in ipairs(getAllObjects()) do
+    if obj.hasTag('KTUIDiceRoller') then
+      matGuid = obj.guid
+			sidePlayerColor = obj.call("getSideColor", side)
+      break
+    end
+  end
+
 	if self.getDescription() == '' then
 		setDefaultState()
 	end
@@ -67,26 +79,50 @@ function hasGuid(t, g)
 
 	return false
 end
+
 --Runs when non-dice is put into bag
 function onObjectEnterContainer(container, obj)
-    if container == self and obj.tag ~= "Dice" then
-        local pos = self.getPosition()
-        local f = self.getTransformRight()
-        self.takeObject({
-            position          = {pos.x+20,pos.y+50,pos.z+20},
-            smooth            = false,
-        })
-        return
-    end
+	if container == self then
+		local pos = self.getPosition()
+		local f = self.getTransformRight()
+
+		if obj.tag ~= "Dice" then
+			self.takeObject({
+				position          = {pos.x+20,pos.y+50,pos.z+20},
+				smooth            = false,
+			})
+			return
+		end
+
+		playerColor = lastHolder[obj]
+		if playerColor ~= sidePlayerColor then
+			local dice = self.takeObject({
+				position          = {pos.x+20,pos.y+50,pos.z+20},
+				smooth            = false,
+			})
+			dice.destruct()
+			getObjectFromGUID(matGuid).call("isPlayerAllowed",Player[playerColor])
+			return
+		end
+	end
 end
+
 --Runs when an object is dropped in bag.
 function onCollisionEnter(collision_info)
 	playerColor = lastHolder[collision_info.collision_object]
-	if collision_info.collision_object.getGUID() == nil then return end
+
+	if collision_info.collision_object.getGUID() == nil then
+		return
+	end
+	if playerColor ~= sidePlayerColor then
+		collision_info.collision_object.destruct()
+		return
+	end
+
 	diceGuidFaces = {}
 	sortedKeys = {}
 
---Save number of faces on dice
+	--Save number of faces on dice
 	for k, v in ipairs(getAllObjects()) do
 		if v.tag == 'Dice' then
 			objType = tostring(v)
@@ -94,23 +130,19 @@ function onCollisionEnter(collision_info)
 			if faces == nil then
 				faces = tonumber(customFace[v.getCustomObject().type + 1])
 			end
-		diceGuidFaces[v.getGUID()] = faces
-		table.insert(sortedKeys, v.getGUID())
+			diceGuidFaces[v.getGUID()] = faces
+			table.insert(sortedKeys, v.getGUID())
 		end
 	end
 
---[[Benchmarking code
-if resetclock ~= 1 then
-clockstart = os.clock()
-resetclock = 1
-end--]]
-
---Creates a timer to take the dice out and position them.
+	--Creates a timer to take the dice out and position them.
 	Wait.time(|| takeDiceOut(), 0.3)
 end
 
 --Function to take the dice out of the bag and position them.
 function takeDiceOut(tab)
+	diceTab = {}
+
 	local data = JSON.decode(self.getDescription())
 	if data == nil then
 		setDefaultState()
@@ -132,60 +164,58 @@ function takeDiceOut(tab)
 	end
 
 	local objs = self.getObjects()
-	local position = getObjectFromGUID("8afa65").getPosition()
-	rotation = getObjectFromGUID("8afa65").getRotation()
+	local position = getObjectFromGUID(matGuid).getPosition()
+	rotation = getObjectFromGUID(matGuid).getRotation()
+
 	sortedKeys = sortByVal(diceGuids, data.SortNoRows)
 	Rows = {}
 	n = 1
-	diceTab = {}
-	count =0
-	diceValue =1
-
-	for _, key in pairs(sortedKeys) do
+	for ind, key in pairs(sortedKeys) do
 		if diceGuids[key] == math.floor(diceGuids[key]) then
-			resultsTable[diceGuids[key]] = resultsTable[diceGuids[key]] + 1
+			resultsTable[ind] = diceGuids[key]
 		end
 
-	if hasGuid(objs, key) then
-		if Rows[diceGuids[key]] == nil then
-			Rows[diceGuids[key]] = 0
-		end
-		Rows[diceGuids[key]] = Rows[diceGuids[key]] + 1
-		params = {}
-		params.guid = key
+		if hasGuid(objs, key) then
+			if Rows[diceGuids[key]] == nil then
+				Rows[diceGuids[key]] = 0
+			end
+			Rows[diceGuids[key]] = Rows[diceGuids[key]] + 1
+			params = {}
+			params.guid = key
 
-		if diceValue != diceGuids[key] then
+			if diceValue != diceGuids[key] then
+				diceValue = diceGuids[key]
+				count =0
+			end
 
-			diceValue = diceGuids[key]
-			count =0
-		end
-		params.position = getPoint(-count-2, (-diceGuids[key]*1.17)+4.66)
-		count = count +1
+			local p = count+2
+			if side == "Left" then
+				p = -count-2
+			end
+			params.position = getPoint(p, (-diceGuids[key]*1.17)+4.66)
+			count = count +1
 
-
-		params.callback = 'setValueCallback'
-		params.params = {diceGuids[key]}
-		params.smooth = false
-		if data.SmoothDice == 'yes' then params.smooth = true end
+			--params.rotation = {rotation.x, rotation.y, rotation.z}
+			params.callback = 'setValueCallback'
+			params.params = {diceGuids[key]}
+			params.smooth = false
+			if data.SmoothDice == 'yes' then params.smooth = true end
 			obj = self.takeObject(params)
 			table.insert(diceTab,obj)
-			getObjectFromGUID("8afa65").call("setDice",{ diceTabTemp = diceTab, player = "Red" })
-
+			getObjectFromGUID(matGuid).call("setDice",{ diceTabTemp = diceTab, player = Player[sidePlayerColor] })
 			n = n + 1
 		end
-
 	end
 	printresultsTable()
---[[Benchmarking code
-	clockend = os.clock()
-	resetclock=0
-	print('Runtime: ' .. clockend-clockstart .. ' seconds.')--]]
+	--[[Benchmarking code
+		clockend = os.clock()
+		resetclock=0
+		print('Runtime: ' .. clockend-clockstart .. ' seconds.')--]]
 end
 
 function getPoint(relativeX, relativeZ)
-
-  local pos = Vector(getObjectFromGUID("8afa65").getPosition().x,getObjectFromGUID("8afa65").getPosition().y,getObjectFromGUID("8afa65").getPosition().z)
-  local rot = getObjectFromGUID("8afa65").getRotation()
+  local pos = Vector(getObjectFromGUID(matGuid).getPosition().x,getObjectFromGUID(matGuid).getPosition().y,getObjectFromGUID(matGuid).getPosition().z)
+  local rot = getObjectFromGUID(matGuid).getRotation()
   local angleY = -math.rad(rot.y -90)
   local newX = (relativeX * math.cos(angleY) - relativeZ * math.sin(angleY)) + pos.x
   local newY = pos.y + 4
@@ -208,24 +238,12 @@ end
 function printresultsTable()
 	local data = JSON.decode(self.getDescription())
 	if sum(resultsTable) > 0 and data.Results == 'yes' then
-		local description = {'Ones.', 'Twos.', 'Threes.', 'Fours.', 'Fives.', 'Sixes.', 'Sevens.', 'Eights.', 'Nines.', 'Tens.', 'Elevens.', 'Twelves.', 'Thirteens.', 'Fourteens.', 'Fifteens.', 'Sixteens.', 'Seventeens', 'Eighteens.', 'Nineteens.', 'Twenties.'}
-		local msg = ''
-		for dieFace, numRolled in ipairs(resultsTable) do
-			if numRolled > 0 then
-				msg = msg .. numRolled .. ' ' .. description[dieFace] .. ' '
-			end
-		end
-
-		local message = ""
-	  local time = '[' .. os.date("%H") .. ':' .. os.date("%M") .. ':' .. os.date("%S") .. ' UTC] '
-	  if playerColor == nil then
-	    message = '\n*******************************************************\n' .. time .. '~UNKNOWN PLAYER~ rolls:\n' .. result
-	    printToAll(message, {1, 1, 1})
-	  else
-	    message = '\n*******************************************************\n' .. time .. Player[playerColor].steam_name .. ' rolls:\n' .. result
-	    printToAll(message, stringColorToRGB(playerColor))
-	  end
-	  broadcastToAll(message)
+		local params = {
+			resultTab = resultsTable,
+			player_name = Player[sidePlayerColor].steam_name,
+			color = sidePlayerColor
+		}
+		getObjectFromGUID(matGuid).call("announceResults", params)
 	end
 
 	for k,v in ipairs(resultsTable) do
@@ -251,15 +269,14 @@ function setValueCallback(obj, tab)
 		if isSquare then
 			if isThisABloodyCustomDie.image ~= nil and callFaces == 6 then
 				waitFrames(35)
+				local rot = getObjectFromGUID(matGuid).getRotation()
 				local r = obj.getRotation()
-				local rot =  getObjectFromGUID("8afa65").getRotation()
 				obj.setRotation({r.x, rot.y + 180, r.z})
 			end
 		else
-
 			if callFaces == 6 then
 				waitFrames(35)
-				local rot =  getObjectFromGUID("8afa65").getRotation()
+				local rot = getObjectFromGUID(matGuid).getRotation()
 				local r = obj.getRotation()
 				obj.setRotation({r.x, rot.y + 180, r.z})
 			end
@@ -278,14 +295,3 @@ function waitFrames(frames)
 		frames = frames - 1
 	end
 end
-
-
---Function to print table contents.
---[[
-function printTable(tempTable)
-	for k, v in pairs(tempTable) do
-		print('key = ' .. k)
-		print('value =' .. v)
-	end
-end
---]]

@@ -1,5 +1,7 @@
+math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,7))+tonumber(tostring(os.clock()):reverse():sub(1,7)))
+
+diceTabL = {}
 diceTabR = {}
-diceTabB = {}
 
 local size = 1
 local dice6Image = ''
@@ -14,6 +16,9 @@ local tuto = 0
 local isRolling = 0
 
 function onLoad()
+  leftColor = "Red"
+  rightColor = "Blue"
+
   self.registerCollisions(false)
   guid = self.getGUID();
 
@@ -55,10 +60,9 @@ function onLoad()
           </VerticalLayout>
         </HorizontalLayout>
       </Panel>
-      <Panel id="diceZoomUI"
-        allowDragging="true" restrictDraggingToParentBounds="false" returnToOriginalPositionWhenReleased="false" active="false" height="280" width="100">
-        <Button onClick="]]..guid..[[/zoom()" height="280" width="100" position="-900 -130 -20" rotation="0 0 0" childAlignment="MiddleCenter" colors="rgba(0.2,0.2,0.2,0.7)|rgba(0.2,0.2,0.2,0.9)|rgba(0.2,0.2,0.2,0.9)|rgba(0.2,0.2,0.2,0.9)"></Button>
-        <Panel height="280" width="100" position="-900 -130 -20" rotation="0 0 0" childAlignment="MiddleCenter">
+      <Panel id="diceZoomUI" color="rgba(0.2,0.2,0.2,0.7)" position="-900 -130 -20" rotation="0 0 0"
+        allowDragging="true" restrictDraggingToParentBounds="false" returnToOriginalPositionWhenReleased="false" active="true" height="280" width="100">
+        <Panel height="280" width="100" childAlignment="MiddleCenter">
           <HorizontalLayout childAlignment="MiddleCenter">
             <VerticalLayout>
               <Text fontStyle="bold" fontSize="20" id="r1" color="#f94231">0</Text>
@@ -93,15 +97,38 @@ function onLoad()
   end
 end
 
-function askSpawn(args)
-  spawnKill(args["player"],args["number"],args["auto"])
+function getSideColor(side)
+  if side == "Left" then
+    return leftColor
+  else
+    return rightColor
+  end
 end
 
-function spawnKill(player,number,autoRoll)
-  deleteDice(obj, player.color)
-  if player.color ~= "Blue" and player.color ~= "Red" then
-    return
+function isPlayerAllowed(player, func)
+  --print(func)
+  local retValue = player.color == leftColor or player.color == rightColor
+  if retValue == false then
+    player.broadcast("Hey ["..getColorHex(player.color).."]"..player.steam_name.."[-]! Only ["..getColorHex(leftColor).."]".. leftColor.."[-] and ["..getColorHex(rightColor).."]"..rightColor.."[-] players can use the roller!")
   end
+  return retValue
+end
+
+function getColorHex(color)
+  return Color.fromString(color):toHex()
+end
+
+function askSpawn(args)
+  local player = args["player"]
+  local number = args["number"]
+  local auto = args["auto"]
+  if isPlayerAllowed(player, 'askSpawn') == false then return end
+  spawnKill(player, number, auto)
+end
+
+function spawnKill(player, number, autoRoll)
+  if isPlayerAllowed(player, 'spawnKill') == false then return end
+  deleteDice(obj, player)
 
   for i=1, number, 1 do
     if dice6Image == '' then
@@ -112,7 +139,7 @@ function spawnKill(player,number,autoRoll)
         scale             = {x=1+((size-1)*2), y=1+((size-1)*2), z=1+((size-1)*2)},
         sound             = true,
         snap_to_grid      = false,
-        callback_function = function(obj) spawn_callback(obj,player.color,autoRoll,dice6Image,false,key) end
+        callback_function = function(obj) spawn_callback(obj,player,autoRoll,dice6Image,false,key) end
       }
     else
       spawnParams = {
@@ -122,7 +149,7 @@ function spawnKill(player,number,autoRoll)
         scale             = {x=1+((size-1)*2), y=1+((size-1)*2), z=1+((size-1)*2)},
         sound             = true,
         snap_to_grid      = false,
-        callback_function = function(obj) spawn_callback(obj,player.color,autoRoll,dice6Image,true,key) end
+        callback_function = function(obj) spawn_callback(obj,player,autoRoll,dice6Image,true,key) end
       }
     end
     spawnObject(spawnParams)
@@ -130,31 +157,29 @@ function spawnKill(player,number,autoRoll)
 end
 
 function spawn_callback(obj,player,autoRoll,diceImage,custom,key)
+  if isPlayerAllowed(player, 'spawn_callback') == false then return end
   local newobj
   local timeToWait = 0.3
   if custom == true then
-    params = {
-      image = diceImage,
-      type=1,
-    }
+    params = { image = diceImage, type=1, }
     obj.setCustomObject(params)
     newobj = obj.reload()
     timeToWait = 0.5
   else
     newobj = obj
   end
-  if player == "Red" then
+  if player.color == leftColor then
+    table.insert(diceTabL,newobj)
+  else
     table.insert(diceTabR,newobj)
   end
-  if player == "Blue" then
-    table.insert(diceTabB,newobj)
-  end
+
   Wait.condition(
     function()
-      newobj.addToPlayerSelection(player)
-      newobj.setColorTint(diceColor)
+      newobj.addToPlayerSelection(player.color)
+      newobj.setColorTint(player.color)
       if autoRoll2 == 1 or autoRoll == 1 then
-          Wait.time(function() roll(Player[player]) end,timeToWait)
+          Wait.time(function() roll(player) end,timeToWait)
       end
     end
     ,
@@ -164,25 +189,24 @@ function spawn_callback(obj,player,autoRoll,diceImage,custom,key)
 end
 
 function regroup(player)
+  if isPlayerAllowed(player, 'regroup') == false then return end
   local buff = true
   local offset = 4.8
-  if player=="Red" then
+  if player.color == leftColor then
     offset = -offset
   end
   fixValue(player)
   getDiceNumber(player)
 
   for key,value in pairs(getGrid(getDiceNumber(player),-1,-1,2*size,offset)) do
-    if player=="Red" then
-      diceTabR[key].setRotation({x=diceTabR[key].getRotation().x,y=self.getRotation().y,z=diceTabR[key].getRotation().z})
-
-      if diceTabR[key].setPositionSmooth(value, false, true) == false then
+    if player.color == leftColor then
+      diceTabL[key].setRotation({x=diceTabL[key].getRotation().x,y=self.getRotation().y,z=diceTabL[key].getRotation().z})
+      if diceTabL[key].setPositionSmooth(value, false, true) == false then
         buff = false
       end
     else
-      diceTabB[key].setRotation({x=diceTabB[key].getRotation().x,y=self.getRotation().y,z=diceTabB[key].getRotation().z})
-
-      if diceTabB[key].setPositionSmooth(value, false, true) == false then
+      diceTabR[key].setRotation({x=diceTabR[key].getRotation().x,y=self.getRotation().y,z=diceTabR[key].getRotation().z})
+      if diceTabR[key].setPositionSmooth(value, false, true) == false then
         buff = false
       end
     end
@@ -234,14 +258,16 @@ function round(n)
 end
 
 function fixValue(player)
-  if player == "Red" then
-    for key,value in pairs(diceTabR) do
+  if isPlayerAllowed(player, 'fixValue') == false then return end
+
+  if player.color == leftColor then
+    for key,value in pairs(diceTabL) do
       if value != nil then
         value.setValue(value.getValue())
       end
     end
   else
-    for key,value in pairs(diceTabB) do
+    for key,value in pairs(diceTabR) do
       if value != nil then
         value.setValue(value.getValue())
       end
@@ -250,14 +276,16 @@ function fixValue(player)
 end
 
 function deleteDice(obj, player)
-  if player == "Red" then
-    for key,value in pairs(diceTabR) do
+  if isPlayerAllowed(player, 'deleteDice') == false then return end
+
+  if player.color == leftColor then
+    for key,value in pairs(diceTabL) do
       if value != nil then
         destroyObject(value)
       end
     end
   else
-    for key,value in pairs(diceTabB) do
+    for key,value in pairs(diceTabR) do
       if value != nil then
         destroyObject(value)
       end
@@ -267,9 +295,19 @@ function deleteDice(obj, player)
 end
 
 function getDiceNumber(player)
+  if isPlayerAllowed(player, 'getDiceNumber') == false then return end
+
   local diceNumber = 0
   local diceTabTemp = {}
-  if player == "Red" then
+  if player.color == leftColor then
+    for key,value in pairs(diceTabL) do
+      if value != nil then
+        diceNumber = diceNumber + 1
+        table.insert(diceTabTemp,value)
+      end
+    end
+    diceTabL = diceTabTemp
+  else
     for key,value in pairs(diceTabR) do
       if value != nil then
         diceNumber = diceNumber + 1
@@ -277,14 +315,6 @@ function getDiceNumber(player)
       end
     end
     diceTabR = diceTabTemp
-  else
-    for key,value in pairs(diceTabB) do
-      if value != nil then
-        diceNumber = diceNumber + 1
-        table.insert(diceTabTemp,value)
-      end
-    end
-    diceTabB = diceTabTemp
   end
   return diceNumber
 end
@@ -293,7 +323,7 @@ function setDiceValue()
   all = 0
   for i=1,6 do
     buff = 0
-    for k,v in ipairs(diceTabR) do
+    for k,v in ipairs(diceTabL) do
       if v != nil and v.getValue() == i  then
         buff = buff + 1
       end
@@ -309,7 +339,7 @@ function setDiceValue()
   all = 0
   for i=1,6 do
     buff = 0
-    for k,v in ipairs(diceTabB) do
+    for k,v in ipairs(diceTabR) do
       if v != nil and v.getValue() == i  then
         buff = buff + 1
       end
@@ -333,116 +363,121 @@ function onUpdate()
 end
 
 function roll(player)
-  if getDiceNumber(player.color) != 0 then
-    for key,value in pairs(Player[player.color].getSelectedObjects()) do
+  if isPlayerAllowed(player, 'roll') == false then return end
+
+  if getDiceNumber(player) != 0 then
+    for key,value in pairs(player.getSelectedObjects()) do
       value.roll()
       value.roll()
     end
   end
   if isRolling == 0 then
     isRolling = 1
-    Wait.time(function() order(player.color) end, 2.2)
+    Wait.time(function() order(player) end, 2.2)
   end
 end
 
 function order(player)
+  if isPlayerAllowed(player, 'order') == false then return end
   fixValue(player)
 
   for diceValue=1, 6, 1 do
     local diceIndex = 0
     local tabLength = 0
     local diceTabTemp = {}
-    if player =="Red" then
-      for key,value in pairs(diceTabR) do
-        if diceTabR[key] != nil then
-          if diceTabR[key].getRotationValue() == diceValue then
-            table.insert(diceTabTemp, diceTabR[key])
-            tabLength = tabLength + 1
-          end
-        end
-      end
-      local count = 0
-      for key,value in pairs(diceTabTemp) do
-        diceTabTemp[key].setRotation({x=diceTabTemp[key].getRotation().x,y=self.getRotation().y,z=diceTabTemp[key].getRotation().z})
-        diceTabTemp[key].setPositionSmooth(getPoint(-count-2, (-diceValue*1.17)+4.66),false, true)
-        count = count + 1.1
-      end
+    local diceTabCurrent = {}
+
+    if player.color == leftColor then
+      diceTabCurrent = diceTabL
     else
-      for key,value in pairs(diceTabB) do
-        if diceTabB[key] != nil then
-          if diceTabB[key].getRotationValue() == diceValue then
-            table.insert(diceTabTemp, diceTabB[key])
-            tabLength = tabLength + 1
-          end
+      diceTabCurrent = diceTabR
+    end
+    log(diceTabCurrent)
+    for key,value in pairs(diceTabCurrent) do
+      if diceTabCurrent[key] != nil then
+        if diceTabCurrent[key].getRotationValue() == diceValue then
+          table.insert(diceTabTemp, diceTabCurrent[key])
+          tabLength = tabLength + 1
         end
-      end
-      local count = 0
-      for key,value in pairs(diceTabTemp) do
-        diceTabTemp[key].setRotation({x=diceTabTemp[key].getRotation().x,y=self.getRotation().y,z=diceTabTemp[key].getRotation().z})
-        diceTabTemp[key].setPositionSmooth(getPoint(count+2, (-diceValue*1.17)+4.66),false, true)
-        count = count + 1.1
       end
     end
+
+    local count = 0
+    for key,value in pairs(diceTabTemp) do
+      diceTabTemp[key].setRotation({x=diceTabTemp[key].getRotation().x,y=self.getRotation().y,z=diceTabTemp[key].getRotation().z})
+      local p = -count- 2
+      if player.color == rightColor then p = -p end
+      diceTabTemp[key].setPositionSmooth(getPoint(p, (-diceValue*1.17)+4.66),false, true)
+      count = count + 1.1
+    end
   end
+
   printresultsTable(player)
 end
 
 function selectValueP(player,valueDice)
+  if isPlayerAllowed(player, 'selectValueP') == false then return end
+
   if destroyTimer == 1 then
     destroyTimer = 0
-    destroyValueP(player.color,valueDice)
+    destroyValueP(player,valueDice)
   else
     destroyTimer = 1
     Wait.time(timerDestroy,0.25)
-    Player[player.color].clearSelectedObjects()
-    if player.color == "Red" then
-      for key,value in pairs(diceTabR) do
+    player.clearSelectedObjects()
+
+    if player.color == leftColor then
+      for key,value in pairs(diceTabL) do
         if value != nil and value.getRotationValue() >= tonumber(valueDice) then
           value.addToPlayerSelection(player.color)
         end
       end
     else
-      for key,value in pairs(diceTabB) do
+      for key,value in pairs(diceTabR) do
         if value != nil and value.getRotationValue() >= tonumber(valueDice) then
           value.addToPlayerSelection(player.color)
         end
       end
     end
-    getDiceNumber(player.color)
+    getDiceNumber(player)
   end
 end
 
 function selectValue(player,valueDice)
-  Player[player.color].clearSelectedObjects()
-  if player.color == "Red" then
-    for key,value in pairs(diceTabR) do
-      if value != nil and value.getRotationValue() == tonumber(valueDice) then
+  if isPlayerAllowed(player, 'selectValue') == false then return end
+  player.clearSelectedObjects()
+
+  if player.color == leftColor then
+    for key,value in pairs(diceTabL) do
+      if value ~= nil and value.getRotationValue() == tonumber(valueDice) then
         value.addToPlayerSelection(player.color)
       end
     end
   else
-    for key,value in pairs(diceTabB) do
-      if value != nil and value.getRotationValue() == tonumber(valueDice) then
+    for key,value in pairs(diceTabR) do
+      if value ~= nil and value.getRotationValue() == tonumber(valueDice) then
         value.addToPlayerSelection(player.color)
       end
     end
   end
-  getDiceNumber(player.color)
+  getDiceNumber(player)
 end
 
 function destroyValueP(player,valueDice)
+  if isPlayerAllowed(player, 'destroyValueP') == false then return end
+
   if(valueDice == "1") then
     valueDice = "7"
   end
 
-  if player == "Red" then
-    for key,value in pairs(diceTabR) do
+  if player == leftColor then
+    for key,value in pairs(diceTabL) do
       if value != nil and value.getRotationValue() < tonumber(valueDice) then
         destroyObject(value)
       end
     end
   else
-    for key,value in pairs(diceTabB) do
+    for key,value in pairs(diceTabR) do
       if value != nil and value.getRotationValue() < tonumber(valueDice) then
         destroyObject(value)
       end
@@ -453,18 +488,19 @@ function destroyValueP(player,valueDice)
 end
 
 function selectAll(player)
-  Player[player].clearSelectedObjects()
+  if isPlayerAllowed(player, 'selectAll') == false then return end
+  player.clearSelectedObjects()
 
-  if player == "Red" then
-    for key,value in pairs(diceTabR) do
+  if player == leftColor then
+    for key,value in pairs(diceTabL) do
       if value != nil then
-        value.addToPlayerSelection(player)
+        value.addToPlayerSelection(player.color)
       end
     end
   else
-    for key,value in pairs(diceTabB) do
+    for key,value in pairs(diceTabR) do
       if value != nil then
-        value.addToPlayerSelection(player)
+        value.addToPlayerSelection(player.color)
       end
     end
   end
@@ -478,6 +514,8 @@ function timerDestroy()
 end
 
 function toggleMenu(player,value,id)
+  if isPlayerAllowed(player, 'toggleMenu') == false then return end
+
   if menu == 0 then
     menu = 1
     self.UI.show('menu')
@@ -488,50 +526,47 @@ function toggleMenu(player,value,id)
 end
 
 function toggleUI(player)
-  local color = player.color
-
-  if color ~= "Blue" and color ~= "Red" then
-    return
+  if isPlayerAllowed(player, 'toggleUI') == false then return end
+  local side = "Left"
+  if player.color == rightColor then
+    side = "Right"
   end
 
   if enablePlayerUI == nil then
     enablePlayerUI = {
-      Blue = false,
-      Red = false
+      Left = false,
+      Right = false
     }
   end
 
-  if enablePlayerUI[color] == false then
-    enablePlayerUI[color] = true
+  if enablePlayerUI[side] == false then
+    enablePlayerUI[side] = true
   else
-    enablePlayerUI[color] = false
+    enablePlayerUI[side] = false
   end
 
   local visibility = ""
-  if enablePlayerUI["Blue"] == true then
-    visibility = "Blue"
+  if enablePlayerUI["Left"] == true then
+    visibility = leftColor
   end
 
-  if enablePlayerUI["Red"] == true then
+  if enablePlayerUI["Right"] == true then
     if visibility ~= "" then
       visibility = visibility.."|"
     end
-    visibility = visibility.."Red"
+    visibility = visibility..rightColor
   end
 
   if visibility == "" then
     UI.setAttribute('diceUI', 'active', 'false')
     UI.setAttribute('dicePrintUI', 'active', 'false')
-    UI.setAttribute('diceZoomUI', 'active', 'false')
   else
     UI.setAttribute('diceUI', 'active', 'true')
     UI.setAttribute('dicePrintUI', 'active', 'true')
-    UI.setAttribute('diceZoomUI', 'active', 'true')
   end
 
   UI.setAttribute('diceUI', 'visibility', visibility)
   UI.setAttribute('dicePrintUI', 'visibility', visibility)
-  UI.setAttribute('diceZoomUI', 'visibility', visibility)
 end
 
 function toggleRoll()
@@ -557,8 +592,7 @@ function toggleTuto()
 end
 
 function zoom(player)
-  local targetPos = Vector(0,0, 0)
-  Player[player.color].lookAt(
+  player.lookAt(
     {
       position = self.getPosition(),
       pitch    = self.getRotation().x + 75,
@@ -568,61 +602,68 @@ function zoom(player)
 end
 
 function setDice(args)
-  if args["player"] == "Red" then
+  local player = args["player"]
+  if isPlayerAllowed(player, 'toggleMenu') == false then return end
+
+  if player.color == leftColor then
+    diceTabL = args["diceTabTemp"]
+    for key,value in pairs(diceTabL) do
+      diceTabL[key].setRotation({x=diceTabL[key].getRotation().x,y=self.getRotation().y,z=diceTabL[key].getRotation().z})
+    end
+  else
     diceTabR = args["diceTabTemp"]
     for key,value in pairs(diceTabR) do
       diceTabR[key].setRotation({x=diceTabR[key].getRotation().x,y=self.getRotation().y,z=diceTabR[key].getRotation().z})
     end
-  else
-    diceTabB = args["diceTabTemp"]
-    for key,value in pairs(diceTabB) do
-      diceTabB[key].setRotation({x=diceTabB[key].getRotation().x,y=self.getRotation().y,z=diceTabB[key].getRotation().z})
-    end
   end
-  selectAll(args["player"])
+  selectAll(player)
 end
 
-function printresultsTable(playerColor)
+function printresultsTable(player)
   isRolling = 0
-  result = ""
-  local description = {'Ones.', 'Twos.', 'Threes.', 'Fours.', 'Fives.', 'Sixes.', 'Sevens.', 'Eights.', 'Nines.', 'Tens.', 'Elevens.', 'Twelves.', 'Thirteens.', 'Fourteens.', 'Fifteens.', 'Sixteens.', 'Seventeens', 'Eighteens.', 'Nineteens.', 'Twenties.'}
-  local resultsTable = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-  if playerColor == "Red" then
-    for i=1,6,1 do
-      for key,value in pairs(diceTabR) do
-        if value.getValue() == i then
-          resultsTable[i] = resultsTable[i]+1
-        end
-      end
-      if resultsTable[i] != 0 then
-        result = result .. " " .. resultsTable[i] .. " " .. description[i]
-      end
-    end
+
+  local params = {
+    resultTab = {},
+    player_name = player.steam_name,
+    color = player.color
+  }
+
+  if player.color == leftColor then
+    params.resultTab = diceTabL
   else
-    for i=1,6,1 do
-      for key,value in pairs(diceTabB) do
-        if value.getValue() == i then
-          resultsTable[i] = resultsTable[i]+1
-        end
+    params.resultTab = diceTabR
+  end
+
+  announceResults(params)
+
+end
+
+function announceResults(params)
+  local resultTab = params["resultTab"]
+  local player_name = params["player_name"]
+  local color = params["color"]
+
+  local result = ""
+  for i=1,6,1 do
+    for key,value in pairs(resultTab) do
+      local rolledValue = 0
+      if type(value) == "number" then
+        rolledValue = value
+      else
+        rolledValue = value.getValue()
       end
-      if resultsTable[i] != 0 then
-        result = result .. " " .. resultsTable[i] .. " " .. description[i]
+
+      if rolledValue == i then
+        if result ~= "" then
+          result = result .. ", "
+        end
+        result = result .. tostring(i)
       end
     end
   end
 
-  local message = ""
-  local time = '[' .. os.date("%H") .. ':' .. os.date("%M") .. ':' .. os.date("%S") .. ' UTC] '
-  if playerColor == nil then
-    message = '\n*******************************************************\n' .. time .. '~UNKNOWN PLAYER~ rolls:\n' .. result
-    printToAll(message, {1, 1, 1})
-  else
-    message = '\n*******************************************************\n' .. time .. Player[playerColor].steam_name .. ' rolls:\n' .. result
-    printToAll(message, stringColorToRGB(playerColor))
-  end
-  broadcastToAll(message)
+  local time = '[' .. os.date("%H") .. ':' .. os.date("%M") .. ':' .. os.date("%S") .. '] '
+  local message = time .. " " .. player_name .. " rolls: " .. result
+  broadcastToAll(message, stringColorToRGB(color))
 
-  for k,v in ipairs(resultsTable) do
-	   resultsTable[k] = 0
-   end
 end
