@@ -13,7 +13,7 @@ local frame = 0
 local menu = 1
 local enableUI = 0
 local tuto = 0
-local isRolling = 0
+local isRolling = {}
 
 function onLoad()
   leftColor = "Red"
@@ -38,7 +38,7 @@ function displayGlobalUI()
     Global.UI.setXml(oldUI .. [[
     <Panel id="diceUI"
       allowDragging="true" restrictDraggingToParentBounds="false" returnToOriginalPositionWhenReleased="false"
-      height="80" width="500" position="-290 -495 -20" rotation= "0 0 0" childAlignment="MiddleCenter" active="false">
+      height="80" width="500" position="653 -495 -20" rotation= "0 0 0" childAlignment="MiddleCenter" active="false">
         <HorizontalLayout id="panelID" childAlignment="MiddleCenter">
           <VerticalLayout>
             <GridLayout cellSize="60 40" childAlignment="MiddleCenter">
@@ -67,7 +67,7 @@ function displayGlobalUI()
           </VerticalLayout>
         </HorizontalLayout>
       </Panel>
-      <Panel id="diceZoomUI" color="rgba(0.2,0.2,0.2,0.7)" position="-900 -130 -20" rotation="0 0 0"
+      <Panel id="diceZoomUI" color="rgba(0.2,0.2,0.2,0.7)" position="-900 0 -20" rotation="0 0 0"
         allowDragging="true" restrictDraggingToParentBounds="false" returnToOriginalPositionWhenReleased="false" active="true" height="280" width="100">
         <Panel height="280" width="100" childAlignment="MiddleCenter">
           <HorizontalLayout childAlignment="MiddleCenter">
@@ -130,6 +130,7 @@ function askSpawn(args)
   local number = args["number"]
   local auto = args["auto"]
   if isPlayerAllowed(player, 'askSpawn') == false then return end
+  if isRolling[player.color] == 1 then return end
   spawnKill(player, number, auto)
 end
 
@@ -378,8 +379,8 @@ function roll(player)
       value.roll()
     end
   end
-  if isRolling == 0 then
-    isRolling = 1
+  if isRolling[player.color] ~= 1 then
+    isRolling[player.color] = 1
     Wait.time(function() order(player) end, 2.2)
   end
 end
@@ -648,7 +649,7 @@ function setDice(args)
 end
 
 function printresultsTable(player)
-  isRolling = 0
+  isRolling[player.color] = 0
 
   local params = {
     resultTab = {},
