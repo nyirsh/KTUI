@@ -517,8 +517,11 @@ function callback_Attack(i)
     end
 
     if roller == nil then return end
-    Player[op.color].clearSelectedObjects()
-    roller.call("askSpawn",{ player = op, number = weaponAttacks, auto = 1})
+
+    Wait.frames(function()
+      Player[op.color].clearSelectedObjects()
+      roller.call("askSpawn", { player = op, number = weaponAttacks, auto = 1})
+    end, 5)
 end
 
 
