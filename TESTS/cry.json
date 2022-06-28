@@ -1,0 +1,236 @@
+{
+                            "@id": "fcc3-2b2e-029a-80ee",
+                            "@name": "Vargoyle",
+                            "@entryId": "4cfe-fdcd-0f91-d629::969f-a7fc-14dc-c34a",
+                            "@number": "1",
+                            "@type": "model",
+                            "profiles": {
+                                "profile": [
+                                    {
+                                        "@id": "4cfe-fdcd-0f91-d629::eabd-64d6-5ef7-37bc",
+                                        "@name": "Vargoyle",
+                                        "@hidden": "false",
+                                        "@typeId": "7bf1-ad0a-0d19-6565",
+                                        "@typeName": "Model",
+                                        "characteristics": {
+                                            "characteristic": [
+                                                {
+                                                    "@name": "Move",
+                                                    "@typeId": "c652-026b-c19b-fb1a",
+                                                    "#text": "8"
+                                                },
+                                                {
+                                                    "@name": "Toughness",
+                                                    "@typeId": "68cf-bb2c-bce1-e83e",
+                                                    "#text": "4"
+                                                },
+                                                {
+                                                    "@name": "Wounds",
+                                                    "@typeId": "585d-de0f-f39b-3633",
+                                                    "#text": "35\t"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "@id": "4cfe-fdcd-0f91-d629::8534-2b73-33c6-c82c",
+                                        "@name": "Murderous Talons",
+                                        "@hidden": "false",
+                                        "@typeId": "d83c-f0e3-af8e-b6b0",
+                                        "@typeName": "Weapon",
+                                        "characteristics": {
+                                            "characteristic": [
+                                                {
+                                                    "@name": "Range",
+                                                    "@typeId": "e85b-c9e0-0d39-7786",
+                                                    "#text": "1"
+                                                },
+                                                {
+                                                    "@name": "Attacks",
+                                                    "@typeId": "60cf-9920-ff5d-032d",
+                                                    "#text": "4"
+                                                },
+                                                {
+                                                    "@name": "Strength",
+                                                    "@typeId": "4591-7140-62c7-f2f1",
+                                                    "#text": "4"
+                                                },
+                                                {
+                                                    "@name": "Damage",
+                                                    "@typeId": "446b-a910-1596-123b",
+                                                    "#text": "2/5"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "selections": {
+                                "selection": [
+                                    {
+                                        "@id": "acd6-a2ca-f196-b323",
+                                        "@name": "\u2028Ferocious",
+                                        "@entryGroupId": "4cfe-fdcd-0f91-d629::ae04-da02-0f63-ba8e::cfa0-ed89-dc32-1e75",
+                                        "@entryId": "4cfe-fdcd-0f91-d629::f819-fed4-3950-3918::8b52-047b-c9e1-3386",
+                                        "@number": "1",
+                                        "@type": "upgrade",
+                                        "costs": {
+                                            "cost": [
+                                                {
+                                                    "@name": "pts",
+                                                    "@typeId": "820d-9f65-fcb1-d476",
+                                                    "@value": "0.0"
+                                                },
+                                                {
+                                                    "@name": "Glory",
+                                                    "@typeId": "8096-c20e-edc8-1a25",
+                                                    "@value": "0.0"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "@id": "7b63-084d-4cea-3c46",
+                                        "@name": "\u2028Fly",
+                                        "@entryGroupId": "4cfe-fdcd-0f91-d629::ae04-da02-0f63-ba8e::cfa0-ed89-dc32-1e75",
+                                        "@entryId": "4cfe-fdcd-0f91-d629::f768-521a-60e2-b5e4::9488-26b8-09dc-98f7",
+                                        "@number": "1",
+                                        "@type": "upgrade",
+                                        "costs": {
+                                            "cost": [
+                                                {
+                                                    "@name": "pts",
+                                                    "@typeId": "820d-9f65-fcb1-d476",
+                                                    "@value": "0.0"
+                                                },
+                                                {
+                                                    "@name": "Glory",
+                                                    "@typeId": "8096-c20e-edc8-1a25",
+                                                    "@value": "0.0"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "@id": "ec04-8c8d-ac62-934a",
+                                        "@name": "\u2028Leader",
+                                        "@entryGroupId": "4cfe-fdcd-0f91-d629::ae04-da02-0f63-ba8e::cfa0-ed89-dc32-1e75",
+                                        "@entryId": "4cfe-fdcd-0f91-d629::5ebd-75cf-7af0-bb0a::4992-8710-6244-a9b8",
+                                        "@number": "1",
+                                        "@type": "upgrade",
+                                        "costs": {
+                                            "cost": [
+                                                {
+                                                    "@name": "pts",
+                                                    "@typeId": "820d-9f65-fcb1-d476",
+                                                    "@value": "0.0"
+                                                },
+                                                {
+                                                    "@name": "Glory",
+                                                    "@typeId": "8096-c20e-edc8-1a25",
+                                                    "@value": "0.0"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "@id": "7793-b408-6f5e-d5db",
+                                        "@name": "Soulblight Gravelords",
+                                        "@entryGroupId": "4cfe-fdcd-0f91-d629::ae04-da02-0f63-ba8e::cfa0-ed89-dc32-1e75",
+                                        "@entryId": "4cfe-fdcd-0f91-d629::c5dc-7096-7ee5-1554::7217-ed91-4ebf-d704",
+                                        "@number": "1",
+                                        "@type": "upgrade",
+                                        "selections": {
+                                            "selection": [
+                                                {
+                                                    "@id": "8a43-f023-f838-2a2f",
+                                                    "@name": "Soulblight Gravelords",
+                                                    "@entryId": "4cfe-fdcd-0f91-d629::c5dc-7096-7ee5-1554::04ea-a143-ff69-3a75::a5a3-b454-c4b9-66c3",
+                                                    "@number": "1",
+                                                    "@type": "upgrade",
+                                                    "costs": {
+                                                        "cost": [
+                                                            {
+                                                                "@name": "Glory",
+                                                                "@typeId": "8096-c20e-edc8-1a25",
+                                                                "@value": "0.0"
+                                                            },
+                                                            {
+                                                                "@name": "pts",
+                                                                "@typeId": "820d-9f65-fcb1-d476",
+                                                                "@value": "0.0"
+                                                            }
+                                                        ]
+                                                    }
+                                                },
+                                                {
+                                                    "@id": "a3e1-b505-d427-9c2c",
+                                                    "@name": "Death",
+                                                    "@entryId": "4cfe-fdcd-0f91-d629::c5dc-7096-7ee5-1554::de04-5577-73c6-b673::1e81-9337-7b78-923a",
+                                                    "@number": "1",
+                                                    "@type": "upgrade",
+                                                    "costs": {
+                                                        "cost": [
+                                                            {
+                                                                "@name": "Glory",
+                                                                "@typeId": "8096-c20e-edc8-1a25",
+                                                                "@value": "0.0"
+                                                            },
+                                                            {
+                                                                "@name": "pts",
+                                                                "@typeId": "820d-9f65-fcb1-d476",
+                                                                "@value": "0.0"
+                                                            }
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "costs": {
+                                            "cost": [
+                                                {
+                                                    "@name": "pts",
+                                                    "@typeId": "820d-9f65-fcb1-d476",
+                                                    "@value": "0.0"
+                                                },
+                                                {
+                                                    "@name": "Glory",
+                                                    "@typeId": "8096-c20e-edc8-1a25",
+                                                    "@value": "0.0"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            },
+                            "categories": {
+                                "category": [
+                                    {
+                                        "@id": "f645-8454-23fc-7695",
+                                        "@name": "Leaders",
+                                        "@entryId": "0ca4-e66d-9403-64a5",
+                                        "@primary": "true"
+                                    },
+                                    {
+                                        "@id": "b861-6ae9-4a83-1991",
+                                        "@name": "Soulblight Leaders",
+                                        "@entryId": "023b-175d-21c0-1b46",
+                                        "@primary": "false"
+                                    }
+                                ]
+                            },
+                            "costs": {
+                                "cost": [
+                                    {
+                                        "@name": "pts",
+                                        "@typeId": "820d-9f65-fcb1-d476",
+                                        "@value": "245.0"
+                                    },
+                                    {
+                                        "@name": "Glory",
+                                        "@typeId": "8096-c20e-edc8-1a25",
+                                        "@value": "0.0"
+                                    }
+                                ]
+                            }
+                        }
